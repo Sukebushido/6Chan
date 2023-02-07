@@ -7,7 +7,7 @@
             {{-- {{dd($post->thread_id)}} --}}
             <div class="container">
                 {!! !$post->OP ? "<div class='sidearrows'>>></div>" : "" !!}
-                <div class="post {{ $post->id == $post->thread_id ? 'main' : 'reply' }}">
+                <div class="post {{ $post->id == $post->thread_id ? 'main' : 'reply' }}" id="p{{ $post->id }}">
                     <div class="title-container">
                         <span class="title">{{ $post->title }}</span>
                         <span class="author">{{ $post->author }}</span>
