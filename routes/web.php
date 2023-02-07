@@ -18,8 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/{boardName}', [BoardController::class, 'index'])->name('blue');
-
-Route::get('/red', function() {
-    return view('red');
-});
+Route::get('/{boardName}', [BoardController::class, 'index'])->name('board');
