@@ -4,8 +4,8 @@
     <div class="test">
         <p>I'm a blue board</p>
         @foreach ($posts as $post)
-        {{-- {{dd($post)}} --}}
-            <div class="container">
+        {{-- {{dd($post->thread_id)}} --}}
+            <div class="container {{$post->id == $post->thread_id ? "main" : "reply"}}">
                 <p>id : {{$post->id}}</p>
                 <p>title : {{$post->title}}</p>
                 <p>author : {{$post->author}}</p>
