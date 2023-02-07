@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string("author")->nullable(false)->default("Anonymous");
             // Lien vers la table images
             $table->boolean("OP")->default(false);
-            $table->longText("Content")->nullable(false);
+            $table->longText("content")->nullable(false);
             $table->timestamps();
         });
     }
