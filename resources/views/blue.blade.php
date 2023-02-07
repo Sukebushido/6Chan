@@ -16,7 +16,7 @@
                         <i class="fa-solid fa-caret-right"></i>
                     </div>
                     <div class="content-container">
-                        <p class="content">{{ $post->content }}</p>
+                        <p class="content">{!! $post->content !!}</p>
                     </div>
                 </div>
             </div>

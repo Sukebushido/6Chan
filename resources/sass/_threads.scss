@@ -44,6 +44,10 @@
 }
 
 .children {
-    color: $child-color;
+    color: $backlink;
     font-size: 10.33px;
+}
+
+.quotelink {
+    color: red;
 }
