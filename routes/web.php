@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,11 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::get('/blue', function() {
-    return view('blue');
-});
+Route::get('/{boardName}', [BoardController::class, 'index'])->name('blue');
 
 Route::get('/red', function() {
     return view('red');
