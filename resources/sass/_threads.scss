@@ -1,0 +1,15 @@
+@import "variables";
+
+.main {
+    background-color: $main;
+    padding: 1rem;
+}
+
+.reply {
+    background-color: $main-darker;
+    padding: 1rem;
+}
+
+.highlight {
+    background-color: $highlight;
+}

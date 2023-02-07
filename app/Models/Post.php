@@ -16,4 +16,9 @@ class Post extends Model
         "OP",
         "content"
     ];
+
+    protected function getAllPostsByThread(int $threadId){
+        $posts = Post::where(["thread_id" => $threadId]);
+        return $posts;
+    }
 }
