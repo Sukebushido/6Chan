@@ -1,7 +1,7 @@
 @extends("layout.app")
 
 @section("content")
-    <div class="test">
+    <div class="test main">
         <p>I'm a blue board</p>
         @foreach ($posts as $post)
         {{-- {{dd($post->thread_id)}} --}}

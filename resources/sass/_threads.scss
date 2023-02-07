@@ -1,11 +1,13 @@
 @import "variables";
 
 .main {
-    background-color: $lighterblue;
+    background-color: $main;
+    padding: 1rem;
 }
 
 .reply {
-    background-color: $lightblue;
+    background-color: $main-darker;
+    padding: 1rem;
 }
 
 .highlight {
