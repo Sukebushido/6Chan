@@ -12,13 +12,21 @@
     background-color: $highlight;
 }
 
+.post {
+    padding: 2px;
+    margin: 4px;
+}
+
+.sidearrows {
+    margin: 4px 2px;
+}
+
 .container {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     flex-flow: nowrap;
     font-size: 13.3px;
-    margin: 4px;
 }
 
 .content-container {

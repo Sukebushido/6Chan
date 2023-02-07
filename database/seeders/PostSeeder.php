@@ -41,7 +41,7 @@ class PostSeeder extends Seeder
             ],
             [
                 "thread_id" => 4,
-                "content" => "This mf gets it",
+                "content" => "This mf gets it, imagine wakin up to this anon. You're fucked no matter what, you better GTFO of here while you still can",
             ],
             [
                 "thread_id" => 7,
