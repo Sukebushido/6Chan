@@ -1,15 +1,41 @@
 @import "variables";
 
 .main {
-    background-color: $main;
-    padding: 1rem;
+    background-color: $post;
 }
 
 .reply {
-    background-color: $main-darker;
-    padding: 1rem;
+    background-color: $post-darker;
 }
 
 .highlight {
     background-color: $highlight;
+}
+
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-flow: nowrap;
+    font-size: 13.3px;
+    margin: 4px;
+}
+
+.content-container {
+    margin: 13.3px 2.5rem;
+}
+
+.title {
+    color: $title-color;
+    font-weight: bold;
+}
+
+.author {
+    color: $anonymous-color;
+    font-weight: bold;
+}
+
+.children {
+    color: $child-color;
+    font-size: 10.33px;
 }
