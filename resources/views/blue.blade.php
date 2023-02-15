@@ -21,6 +21,11 @@
                 </div>
             </div>
         @endforeach
-        <x-create-post-window/>
+        <button id="testButton">Clique</button>
+        <livewire:create-post-window/>
     </div>
 @endsection
+
+@push('script')
+    
+@endpush()
