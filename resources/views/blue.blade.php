@@ -21,5 +21,6 @@
                 </div>
             </div>
         @endforeach
+        <x-create-post-window/>
     </div>
 @endsection
