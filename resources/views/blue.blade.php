@@ -3,29 +3,14 @@
 @section('content')
     <div class="test main">
         <p>I'm a blue board</p>
-        @foreach ($posts as $post)
-            {{-- {{dd($post->thread_id)}} --}}
-            <div class="container">
-                {!! !$post->OP ? "<div class='sidearrows'>>></div>" : "" !!}
-                <div class="post {{ $post->id == $post->thread_id ? 'main' : 'reply' }}" id="p{{ $post->id }}">
-                    <div class="title-container">
-                        <span class="title">{{ $post->title }}</span>
-                        <span class="author">{{ $post->author }}</span>
-                        <span class="created-at">{{ $post->created_at }}</span>
-                        <span class="id">No.{{ $post->id }}</span>
-                        <i class="fa-solid fa-caret-right"></i>
-                    </div>
-                    <div class="content-container">
-                        <p class="content">{!! $post->content !!}</p>
-                    </div>
-                </div>
-            </div>
+        @foreach ($threads as $thread)
+            @foreach ($thread->getPosts() as $post)
+                <x-post-component :post="$post" />
+            @endforeach <br>
         @endforeach
         <button id="testButton">Clique</button>
-        <livewire:create-post-window/>
     </div>
 @endsection
 
 @push('script')
-    
 @endpush()

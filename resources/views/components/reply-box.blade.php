@@ -1,6 +1,6 @@
 <form action="" id="reply_form" class="reply-box">
     <div class="header">
-        <p class="title">Reply to Thread No. X</p>
+        <p class="title">Reply to Thread No.{{ $thread->id }}</p>
         <i class="fa-solid fa-xmark"></i>
     </div>
     <input type="text" name="name" id="name" placeholder="Name" autocomplete="off">
