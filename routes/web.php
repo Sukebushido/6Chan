@@ -19,3 +19,4 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/{boardName}', [BoardController::class, 'index'])->name('board');
+Route::get('/{threadId}/{threadTitle}', [BoardController::class, 'thread'])->name('board');

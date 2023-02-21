@@ -10,11 +10,16 @@ use Illuminate\Support\Facades\Redirect;
 
 class BoardController extends Controller
 {
-    public function index ($boardName)
+    public function index($boardName)
     {
         $boardId = Board::where(['name' => $boardName])->first()->id;
         $threads = Thread::where(['board_id' => $boardId])->get();
 
         return view()->exists($boardName) ? view($boardName, ["threads" => $threads]) : Redirect::route("home");
+    }
+
+    public function thread($threadId, $treadTitle)
+    {
+        
     }
 }
