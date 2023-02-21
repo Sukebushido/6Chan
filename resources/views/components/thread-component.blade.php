@@ -1,7 +1,8 @@
 <div class="test main">
-    <p>I'm a blue board</p>
+    <p>kek</p>
+    {{-- <p>I'm a blue board</p>
     @foreach ($posts as $post)
-        {{-- {{dd($post->thread_id)}} --}}
+        {{dd($post->thread_id)}}
         <div class="container">
             {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
             <div class="post {{ $post->id == $post->thread_id ? 'main' : 'reply' }}" id="p{{ $post->id }}">
@@ -19,5 +20,5 @@
         </div>
     @endforeach
     <x-reply-box :thread="$thread_id" />
-    <button id="testButton">Clique</button>
+    <button id="testButton">Clique</button> --}}
 </div>

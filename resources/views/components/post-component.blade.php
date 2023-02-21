@@ -10,7 +10,7 @@
                 <a href="#" class="id" title="Reply to this post">{{ $post->id }}</a>
             </span>
             {{-- Need to fix later, linkin to thread  --}}
-            {!! $post->OP ? '[<a href="#">Reply</a>]' : '' !!}
+            {{-- <a href="{{ route('thread', ['boardName' => $post->thread_id, 'threadId' => $post->thread_id, 'threadTitle' => $post->thread_id])}}">Route</a> --}}
             <i class="fa-solid fa-caret-right"></i>
         </div>
         <div class="content-container">
