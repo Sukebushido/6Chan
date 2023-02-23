@@ -10,14 +10,14 @@ class Board extends Model
 {
     use HasFactory;
 
-    public function threads(): HasMany
+    public function getThreads(): HasMany
     {
         return $this->hasMany(Thread::class);
     }
 
     public function getOPs()
     {
-        $threads = Thread::where(['board_id' => $this->id])->get();
+        $threads = $this->getThreads()->where(['board_id' => $this->id])->get();
         $threadsIDs = [];
 
         foreach ($threads as $thread) {
@@ -26,14 +26,7 @@ class Board extends Model
 
         $OPs = Post::find($threadsIDs);
         
-        // dd($OPs);
         return $OPs;
-        // return Post::where(["OP" => true])->get();
-    }
-
-    public function getCurrentID()
-    {
-        return $this->id;
     }
 
     protected $fillable = [

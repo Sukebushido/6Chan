@@ -22,7 +22,28 @@ class Post extends Model
     //     return $posts;
     // }
 
-    public function getThread(){
+    public function getThread()
+    {
         return $this->belongsTo(Thread::class, 'thread_id', 'id')->first();
+    }
+
+    public function getBoard()
+    {
+        return $this->getThread()->getBoard();
+    }
+
+    public function getThreadId()
+    {
+        return $this->getThread()->id;
+    }
+
+    public function getThreadTitle()
+    {
+        return $this->getThread()->title;
+    }
+
+    public function getBoardId()
+    {
+        return $this->getThread()->getBoard()->id;
     }
 }
