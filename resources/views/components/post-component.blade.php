@@ -10,7 +10,8 @@
                 <a href="#" class="id" title="Reply to this post">{{ $post->id }}</a>
             </span>
             {{-- Need to fix later, linkin to thread  --}}
-            {{-- <a href="{{ route('thread', ['boardName' => $post->thread_id, 'threadId' => $post->thread_id, 'threadTitle' => $post->thread_id])}}">Route</a> --}}
+            <a
+                href="{{ route('thread', ['boardName' => $post->getThread()->getBoard()->name, 'threadId' => $post->getThread()->id, 'threadTitle' => $post->getThread()->title]) }}">Route</a>
             <i class="fa-solid fa-caret-right"></i>
         </div>
         <div class="content-container">
