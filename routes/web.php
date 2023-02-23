@@ -24,7 +24,7 @@ Route::get('/test', [ThreadController::class, 'index'])->name('test');
 
 Route::group(['prefix' => '/{boardName}'], function(){
     Route::get('/', [BoardController::class, 'index'])->name('board');
-    Route::get('/{threadId}/{threadTitle}', [BoardController::class, 'thread'])->name('thread');
+    Route::get('/{threadId}/{threadTitle}', [ThreadController::class, 'index'])->name('thread');
 }); 
 
 

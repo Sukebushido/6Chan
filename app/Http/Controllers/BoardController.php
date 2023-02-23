@@ -17,11 +17,4 @@ class BoardController extends Controller
 
         return view()->exists($boardName) ? view($boardName, ["threads" => $threads]) : Redirect::route("home");
     }
-
-    public function thread($boardName, $threadId, $threadTitle)
-    {
-        $threads = Thread::where("id", $threadId)->where("title", $threadTitle)->get();
-        // dd($threadId, $threadTitle);
-        return view("blue", ["threads" => $threads]);
-    }
 }
