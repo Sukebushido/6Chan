@@ -11,7 +11,7 @@
             </span>
             {{-- Need to fix later, linkin to thread  --}}
             <a
-                href="{{ route('thread', ['boardName' => $post->getThread()->getBoard()->name, 'threadId' => $post->getThread()->id, 'threadTitle' => $post->getThread()->title]) }}">Route</a>
+                href="{{ route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]) }}">Route</a>
             <i class="fa-solid fa-caret-right"></i>
         </div>
         <div class="content-container">
