@@ -13,6 +13,7 @@
             <x-post-component :post="$post" />
         @endforeach
         <button id="testButton">Clique</button>
+        <x-reply-box :thread="$thread"/>
     </div>
 @endsection
 
