@@ -10,8 +10,8 @@
                 <a href="#" class="id" title="Reply to this post">{{ $post->id }}</a>
             </span>
             {{-- Need to fix later, linkin to thread  --}}
-            <a
-                href="{{ route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]) }}">Route</a>
+            {!! $post->OP ? '[<a href="'.route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]).'">Reply</a>]' : '' !!}
+            {{-- <a href="{{ route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]) }}">Route</a> --}}
             <i class="fa-solid fa-caret-right"></i>
         </div>
         <div class="content-container">
