@@ -66,3 +66,13 @@
     justify-content: space-between;
     width: 100%;
 }
+
+.error {
+    color: red;
+    padding: 0.5rem;
+    border-top: 1px gray solid ;
+}
+
+.hidden {
+    display: none;
+}
