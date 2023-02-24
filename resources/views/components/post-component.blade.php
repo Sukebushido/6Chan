@@ -1,4 +1,4 @@
-<div class="container">
+<div class="post container">
     {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
     <div class="post {{ $post->id == $post->thread_id ? 'main' : 'reply' }}" id="p{{ $post->id }}">
         <div class="title-container">

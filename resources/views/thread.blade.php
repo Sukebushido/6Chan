@@ -13,8 +13,19 @@
             <x-post-component :post="$post" />
         @endforeach
         <button id="testButton">Clique</button>
+        <x-reply-box :thread="$thread"/>
     </div>
 @endsection
 
-@push('script')
+@push('scripts')
+    <script>
+        const replyLinks = document.querySelectorAll('.id')
+        const replyBox = document.getElementById('replyBox')
+        replyLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                replyBox.classList.remove('hidden')
+                console.log("faggot");
+            })
+        });
+    </script>
 @endpush()

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BoardController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::group(['prefix' => '/{boardName}'], function(){
     Route::get('/', [BoardController::class, 'index'])->name('board');
     Route::get('/{threadId}/{threadTitle}', [ThreadController::class, 'index'])->name('thread');
     Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
+    Route::post('/imgboard', [PostController::class, 'index'])->name('post');
 }); 
 
 
