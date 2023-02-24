@@ -1,0 +1,68 @@
+.reply-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column nowrap;
+    gap: .1rem;
+    width: 50%; // A changer
+    padding: .1rem;
+    background-color: aquamarine;
+
+    input {
+        padding: .5rem;
+        width: 100%;
+    }
+
+    textarea {
+        padding: .5rem;
+        width: 100%;
+        height: 100px;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    p {
+        width: 250px;
+        padding: 0;
+        text-align: center;
+    }
+
+    i {
+        cursor: pointer;
+    }
+}
+
+.captcha-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column nowrap;
+    gap: .3rem;
+    width: 100%;
+    background-color: lightgrey;
+
+    .top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .3rem;
+        width: 100%;
+    }
+
+    .captcha-img {
+        width: 100%;
+        height: 100px;
+    }
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}

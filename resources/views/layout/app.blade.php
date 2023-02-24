@@ -19,7 +19,7 @@
 
 <body class="antialiased">
     @yield('content')
+    @method('scripts')
 </body>
-@method('scripts')
 
 </html>

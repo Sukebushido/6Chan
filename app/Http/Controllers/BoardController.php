@@ -12,17 +12,9 @@ class BoardController extends Controller
 {
     public function index($boardName)
     {
-        $boardId = Board::where(['name' => $boardName])->first()->id;
-        $threads = Thread::where(['board_id' => $boardId])->get();
-        $totalPosts = [];
+        $boardId = Board::where('name', $boardName)->first()->id;
+        $threads = Thread::where('board_id', $boardId)->get();
 
-        foreach ($threads as $thread) {
-            $posts = Post::getAllPostsByThread($thread->id)->get();
-            foreach ($posts as $post) {
-                $totalPosts[] = $post;
-            }
-        }
-
-        return view()->exists($boardName) ? view($boardName, ["posts" => $totalPosts]) : Redirect::route("home");
+        return view()->exists($boardName) ? view($boardName, ["threads" => $threads]) : Redirect::route("home");
     }
 }

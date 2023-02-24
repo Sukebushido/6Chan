@@ -1,15 +1,53 @@
 @import "variables";
 
 .main {
-    background-color: $main;
-    padding: 1rem;
+    background-color: $post;
 }
 
 .reply {
-    background-color: $main-darker;
-    padding: 1rem;
+    background-color: $post-darker;
 }
 
 .highlight {
     background-color: $highlight;
+}
+
+.post {
+    padding: 2px;
+    margin: 4px;
+}
+
+.sidearrows {
+    margin: 4px 2px;
+}
+
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-flow: nowrap;
+    font-size: 13.3px;
+}
+
+.content-container {
+    margin: 13.3px 2.5rem;
+}
+
+.title {
+    color: $title-color;
+    font-weight: bold;
+}
+
+.author {
+    color: $anonymous-color;
+    font-weight: bold;
+}
+
+.children {
+    color: $backlink;
+    font-size: 10.33px;
+}
+
+.quotelink {
+    color: red;
 }

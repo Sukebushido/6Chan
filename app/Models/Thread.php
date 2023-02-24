@@ -12,4 +12,14 @@ class Thread extends Model
     protected $fillable = [
         "board"
     ];
+
+    public function getPosts()
+    {
+        return $this->hasMany(Post::class, 'thread_id')->get();
+    }
+
+    public function getBoard()
+    {
+        return $this->belongsTo(Board::class, 'board_id', 'id')->first();
+    }
 }
