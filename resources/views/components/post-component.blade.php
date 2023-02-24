@@ -9,9 +9,7 @@
                 <a href="#" class="link" title="Link to this post">No.</a>
                 <a href="#" class="id" title="Reply to this post">{{ $post->id }}</a>
             </span>
-            {{-- Need to fix later, linkin to thread  --}}
-            {!! $post->OP ? '[<a href="'.route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]).'">Reply</a>]' : '' !!}
-            {{-- <a href="{{ route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]) }}">Route</a> --}}
+            {!! $post->OP && Request::is($post->getBoardName()) ? '[<a href="'.route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]).'">Reply</a>]' : '' !!}
             <i class="fa-solid fa-caret-right"></i>
         </div>
         <div class="content-container">
