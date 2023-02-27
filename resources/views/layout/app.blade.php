@@ -19,7 +19,7 @@
 
 <body class="antialiased">
     @yield('content')
-    @stack('scripts')
 </body>
+@stack('scripts')
 
 </html>

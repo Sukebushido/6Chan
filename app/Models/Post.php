@@ -31,6 +31,16 @@ class Post extends Model
     {
         return $this->getThread()->getBoard();
     }
+    
+    public function getBoardId()
+    {
+        return $this->getThread()->getBoard()->id;
+    }
+
+    public function getBoardName()
+    {
+        return $this->getBoard()->name;
+    }
 
     public function getThreadId()
     {
@@ -42,8 +52,4 @@ class Post extends Model
         return $this->getThread()->title;
     }
 
-    public function getBoardId()
-    {
-        return $this->getThread()->getBoard()->id;
-    }
 }

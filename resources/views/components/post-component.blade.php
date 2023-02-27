@@ -1,6 +1,6 @@
-<div class="post container">
+<div class="post container" id="p{{ $post->id }}">
     {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
-    <div class="post {{ $post->id == $post->thread_id ? 'main' : 'reply' }}" id="p{{ $post->id }}">
+    <div class="{{ $post->id == $post->thread_id ? 'main' : 'reply' }}">
         <div class="title-container">
             <span class="title">{{ $post->title }}</span>
             <span class="author">{{ $post->author }}</span>
@@ -9,9 +9,7 @@
                 <a href="#" class="link" title="Link to this post">No.</a>
                 <a href="#" class="id" title="Reply to this post">{{ $post->id }}</a>
             </span>
-            {{-- Need to fix later, linkin to thread  --}}
-            <a
-                href="{{ route('thread', ['boardName' => $post->getThread()->getBoard()->name, 'threadId' => $post->getThread()->id, 'threadTitle' => $post->getThread()->title]) }}">Route</a>
+            {!! $post->OP && Request::is($post->getBoardName()) ? '[<a href="'.route('thread', ['boardName' => $post->getBoardName(), 'threadId' => $post->getThreadId(), 'threadTitle' => $post->getThreadTitle()]).'">Reply</a>]' : '' !!}
             <i class="fa-solid fa-caret-right"></i>
         </div>
         <div class="content-container">
