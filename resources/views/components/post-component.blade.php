@@ -1,6 +1,6 @@
-<div class="post container">
+<div class="post container" id="p{{ $post->id }}">
     {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
-    <div class="post {{ $post->id == $post->thread_id ? 'main' : 'reply' }}" id="p{{ $post->id }}">
+    <div class="{{ $post->id == $post->thread_id ? 'main' : 'reply' }}">
         <div class="title-container">
             <span class="title">{{ $post->title }}</span>
             <span class="author">{{ $post->author }}</span>
