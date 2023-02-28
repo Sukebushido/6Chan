@@ -58,27 +58,47 @@
             link.addEventListener('click', () => {
                 if (!document.body.contains(document.querySelector('#replyBox'))) {
                     const reply = template.content.firstElementChild.cloneNode(true);
+                    const nameInput = reply.querySelector('#name');
+                    const optionsInput = reply.querySelector('#options');
+                    const commentInput = reply.querySelector('#comment');
+                    const captchaInput = reply.querySelector('#captcha');
+                    const imageInput = reply.querySelector('#file');
+                    const closeCross = reply.querySelector('#closeCross')
+                    const errorMessage = reply.querySelector('#errorMessage');
                     let thread = link.parentElement.parentElement.parentElement.parentElement.parentElement
                         .id.substring(1);
 
                     reply.querySelector('#template_thread_id').innerHTML = thread
                     reply.querySelector('#comment').value = ">>" + link.innerHTML
                     reply.querySelector('#closeCross').addEventListener('click', () => {
-                        reply.remove();                        
+                        reply.remove();
                     })
                     reply.querySelector('#submitButton').addEventListener('click', (e) => {
                         e.preventDefault();
+                        axios.post(
+                                "{{ route('post', ['boardName' => $thread->getBoardName()]) }}", {
+                                    "name": nameInput.value,
+                                    "options": optionsInput.value,
+                                    "comment": commentInput.value,
+                                    "captcha": captchaInput.value,
+                                    "file": imageInput.value
+                                })
+                            .then(function(response) {
+                                console.log(response, "kek");
+                            }).catch(error => {
+                                errorMessage.innerText = error.response.data.errors.comment[0]
+                                errorMessage.classList.remove('hidden')
+                            })
                     })
 
                     document.querySelector('.placeholder').appendChild(reply)
                 } else {
-                    const quickReply = document.getElementById('replyBox')
-                    let comment = quickReply.querySelector('#comment');
+                    const reply = document.getElementById('replyBox')
+                    let comment = reply.querySelector('#comment');
                     let prevCommentValue = comment.value
                     comment.value = prevCommentValue + "\n" + ">>" + link.innerHTML
                 }
             })
-        });
-        
+        });        
     </script>
 @endpush()
