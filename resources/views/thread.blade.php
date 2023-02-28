@@ -1,6 +1,9 @@
 @extends('layout.app')
 
 @section('content')
+    @php
+        $show = false;
+    @endphp
     <div class="test main thread" id="t{{ $thread->id }}">
         <div class="top_bar">
             {{-- {{ dd($thread->getBoard()) }} --}}
@@ -10,10 +13,9 @@
             <span>[<a href="">Update</a>]</span>
         </div>
         @foreach ($thread->getPosts() as $post)
-            <x-post-component :post="$post" />
+            <livewire:post-component :post="$post">
         @endforeach
         <button id="testButton">Clique</button>
-        <div class="placeholder"></div>
-        <livewire:reply-component :boardName="$thread->getBoardName()">
+        <div class="placeholder"></div>        
     </div>
 @endsection

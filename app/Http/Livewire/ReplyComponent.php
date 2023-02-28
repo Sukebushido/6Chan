@@ -7,18 +7,12 @@ use Livewire\Component;
 class ReplyComponent extends Component
 {
     public $boardName;
+    public $show;
 
-    protected $listeners = ['postAdded' => 'displayKek'];
+    // protected $listeners = ['show' => 'render'];
 
-    public function displayKek()
+    public function render()
     {
-        return  <<<'blade'
-        <div>Kek</div>
-        blade;
+        return view('livewire.reply-component');
     }
-
-    // public function render()
-    // {
-    //     return view('livewire.reply-component');
-    // }
 }
