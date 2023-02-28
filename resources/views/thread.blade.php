@@ -53,20 +53,24 @@
     <script>
         const replyLinks = document.querySelectorAll('.id')
         const template = document.getElementById('replyTemplate')
+        const button = document.getElementById('submitButton')
         replyLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (!document.body.contains(document.querySelector('#replyBox'))) {
-                    const quickReply = template.content.firstElementChild.cloneNode(true);
+                    const reply = template.content.firstElementChild.cloneNode(true);
                     let thread = link.parentElement.parentElement.parentElement.parentElement.parentElement
                         .id.substring(1);
 
-                    quickReply.querySelector('#template_thread_id').innerHTML = thread
-                    quickReply.querySelector('#comment').value = ">>" + link.innerHTML
-
-                    document.querySelector('.placeholder').appendChild(quickReply)
-                    document.getElementById('closeCross').addEventListener('click', () => {
-                        quickReply.remove();
+                    reply.querySelector('#template_thread_id').innerHTML = thread
+                    reply.querySelector('#comment').value = ">>" + link.innerHTML
+                    reply.querySelector('#closeCross').addEventListener('click', () => {
+                        reply.remove();                        
                     })
+                    reply.querySelector('#submitButton').addEventListener('click', (e) => {
+                        e.preventDefault();
+                    })
+
+                    document.querySelector('.placeholder').appendChild(reply)
                 } else {
                     const quickReply = document.getElementById('replyBox')
                     let comment = quickReply.querySelector('#comment');
@@ -75,5 +79,6 @@
                 }
             })
         });
+        
     </script>
 @endpush()
