@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="test main">
+    <div class="test main thread" id="t{{ $thread->id }}">
         <div class="top_bar">
             {{-- {{ dd($thread->getBoard()) }} --}}
             <span>[<a href="{{ route('board', ['boardName' => $thread->getBoardName()]) }}">Return</a>]</span>
@@ -14,8 +14,6 @@
         @endforeach
         <button id="testButton">Clique</button>
         <div class="placeholder"></div>
-        <x-reply-component :boardName="$thread->getBoardName()" />
+        <livewire:reply-component :boardName="$thread->getBoardName()">
     </div>
 @endsection
-
-

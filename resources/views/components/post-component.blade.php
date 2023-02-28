@@ -17,3 +17,16 @@
         </div>
     </div>
 </div>
+
+@pushOnce('scripts')
+<script defer>
+    let links = document.querySelectorAll('.id')
+    console.log(links);
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            Livewire.emit('postAdded')
+        })
+    })
+</script>
+
+@endPushOnce

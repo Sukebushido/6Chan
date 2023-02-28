@@ -1,4 +1,4 @@
-{{-- <div>
+<div>
     <template id="quickReplyTemplate" hidden>
         <div class="container" id="quickReplyBox">
             <form method="post" action="{{ route('post', ['boardName' => $boardName]) }}" id="reply_form"
@@ -18,7 +18,7 @@
                         <button type="button">?</button>
                     </div>
                     <div class="captcha-img">
-                        captcha here
+                        {{-- captcha here --}}
                     </div>
                 </div>
                 <div class="footer">
@@ -31,7 +31,9 @@
             </form>
         </div>
     </template>
+</div>
 
+{{-- @pushOnce('scripts')
     <script>
         const replyLinks = document.querySelectorAll('.id')
         const template = document.getElementById('quickReplyTemplate')
@@ -81,5 +83,4 @@
             })
         });
     </script>
-
-</div> --}}
+@endPushOnce --}}
