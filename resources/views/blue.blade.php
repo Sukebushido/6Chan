@@ -4,7 +4,7 @@
     <div class="test main">
         <p>I'm a blue board</p>
         @foreach ($threads as $thread)
-            <div class="thread" id="t{{$thread -> id}}">
+            <div class="thread" id="t{{ $thread->id }}">
                 @foreach ($thread->getPosts() as $post)
                     <x-post-component :post="$post" />
                 @endforeach <br>
@@ -55,17 +55,18 @@
         const template = document.getElementById('quickReplyTemplate')
         replyLinks.forEach(link => {
             link.addEventListener('click', () => {
-                if (!document.body.contains(document.querySelector('#replyBox'))){
+                if (!document.body.contains(document.querySelector('#replyBox'))) {
                     const quickReply = template.content.firstElementChild.cloneNode(true);
-                    let thread = link.parentElement.parentElement.parentElement.parentElement.parentElement.id.substring(1);
-    
+                    let thread = link.parentElement.parentElement.parentElement.parentElement.parentElement
+                        .id.substring(1);
+
                     quickReply.querySelector('#template_thread_id').innerHTML = thread
                     quickReply.querySelector('#comment').value = ">>" + link.innerHTML
-    
+
                     document.querySelector('.placeholder').appendChild(quickReply)
                     document.getElementById('closeCross').addEventListener('click', () => {
                         quickReply.remove();
-                    })                    
+                    })
                 } else {
                     const quickReply = document.getElementById('replyBox')
                     let comment = quickReply.querySelector('#comment');
