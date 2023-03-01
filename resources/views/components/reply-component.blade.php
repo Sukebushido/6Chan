@@ -39,7 +39,7 @@
         replyLinks.forEach(link => {
             link.addEventListener('click', () => {
                 let threadId = link.parentElement.parentElement.parentElement.parentElement.parentElement
-                        .id.substring(1);
+                    .id.substring(1);
                 if (!document.body.contains(document.querySelector('#quickReplyBox'))) {
                     const quickReply = template.content.firstElementChild.cloneNode(true);
                     const threadIdInput = quickReply.querySelector('#inputThreadId')
@@ -68,16 +68,22 @@
                                     "file": imageInput.value
                                 })
                             .then(function(response) {
-                                console.log(response, "kek");
                                 errorMessage.innerText = "";
                                 errorMessage.classList.add('hidden')
                             }).catch(error => {
                                 errorMessage.innerText = "";
+                                // stuff to do here
+                                console.log(error.reponse.message);
                                 let errors = error.response.data.errors;
-                                for (let error of Object.values(errors)){
-                                    errorMessage.innerText += `${error[0]}\n`
+                                if (errors = null) {
+                                    errorMessage.innerText = error.message
+                                } else {
+                                    for (let error of Object.values(errors)) {
+                                        errorMessage.innerText += `${error[0]}\n`
+                                    }
+                                    errorMessage.classList.remove('hidden')
                                 }
-                                errorMessage.classList.remove('hidden')
+
                             })
                     })
 
@@ -89,7 +95,7 @@
                     let prevThread = quickReply.querySelector('#template_thread_id').innerHTML
                     let threadIdInput = quickReply.querySelector('#inputThreadId')
 
-                    if(prevThread != threadId) {
+                    if (prevThread != threadId) {
                         threadIdInput.value = threadId
                         quickReply.querySelector('#template_thread_id').innerHTML = threadId
                         comment.value = ">>" + link.innerHTML;
