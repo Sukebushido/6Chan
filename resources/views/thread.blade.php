@@ -13,9 +13,8 @@
             <x-post-component :post="$post" />
         @endforeach
         <button id="testButton">Clique</button>
-        <div class="placeholder"></div>
+        <div class="placeholder">
+        </div>
         <x-reply-component :boardName="$thread->getBoardName()" />
     </div>
 @endsection
-
-
