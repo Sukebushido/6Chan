@@ -3,7 +3,7 @@
         @csrf
         <div class="header">
             <p class="title">Reply to Thread No.<span id="template_thread_id"></span></p>
-            <i class="fa-solid fa-xmark" id="closeCross" wire:click="$emitTo('','show')"></i>
+            <i class="fa-solid fa-xmark" id="closeCross" wire:click="$emitUp('show')"></i>
         </div>
         <input type="text" name="name" id="name" placeholder="Name" autocomplete="off">
         <input type="text" name="options" id="options" placeholder="Options" autocomplete="off">

@@ -6,7 +6,7 @@
             <span class="author">{{ $post->author }}</span>
             <span class="created-at">{{ $post->created_at }}</span>
             <span>
-                <a href="#" class="link" title="Link to this post" wire:click="$emit('show')">No.</a>
+                <a href="#" class="link" title="Link to this post" wire:click="$emitSelf('show')">No.</a>
                 <a href="#" class="id" title="Reply to this post">{{ $post->id }}</a>
             </span>
             {!! $post->OP && Request::is($post->getBoardName())
