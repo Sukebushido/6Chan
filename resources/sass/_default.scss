@@ -9,3 +9,15 @@ a {
     text-decoration: none;
     color: black;
 }
+
+.placeholder {
+    display: flex;
+}
+
+.test2 {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    left: 50%;
+}
