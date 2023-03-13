@@ -33,12 +33,21 @@
 
 @pushOnce('scripts')
     <script>
-        const template = document.getElementById('quickReplyTemplate')
+        const posElem1 = document.getElementById('pos1');
+        const posElem2 = document.getElementById('pos2');
+        const posElem3 = document.getElementById('pos3');
+        const posElem4 = document.getElementById('pos4');
+        const clientXElem = document.getElementById('clientX');
+        const clientYElem = document.getElementById('clientY');
+        const template = document.getElementById('quickReplyTemplate');
+        let finalPosX = 0;
+        let finalPosY = 0;
         template.remove();
         const replyLinks = document.querySelectorAll('.id')
         replyLinks.forEach(link => {
             link.addEventListener('click', () => {
                 let threadId = link.parentElement.parentElement.parentElement.parentElement.parentElement
+                    .id.substring(1) || link.parentElement.parentElement.parentElement.parentElement
                     .id.substring(1);
                 if (!document.body.contains(document.querySelector('#quickReplyBox'))) {
                     const quickReply = template.content.firstElementChild.cloneNode(true);
@@ -54,6 +63,8 @@
                     threadIdInput.value = threadId
                     quickReply.querySelector('#comment').value = ">>" + link.innerHTML
                     quickReply.querySelector('#closeCross').addEventListener('click', () => {
+                        finalPosX = quickReply.style.left;
+                        finalPosY = quickReply.style.top;
                         quickReply.remove();
                     })
                     quickReply.querySelector('#submitButton').addEventListener('click', (e) => {
@@ -86,8 +97,15 @@
 
                             })
                     })
-
-                    document.querySelector('.placeholder').appendChild(quickReply)
+                    if (finalPosX !== 0 && finalPosY !== 0) {
+                        quickReply.style.top = finalPosY;
+                        quickReply.style.left = finalPosX;
+                    } else {
+                        quickReply.style.top = (link.offsetTop - 20) + "px";
+                        quickReply.style.left = (link.offsetLeft + 20) + "px";
+                    }
+                    document.querySelector('.placeholder').appendChild(quickReply);
+                    dragElement(quickReply);
                 } else {
                     const quickReply = document.getElementById('quickReplyBox')
                     let comment = quickReply.querySelector('#comment');
@@ -105,5 +123,43 @@
                 }
             })
         });
+
+        function dragElement(element) {
+            let pos1 = 0,
+                pos2 = 0,
+                pos3 = 0,
+                pos4 = 0;
+            if (element.querySelector(".header")) {
+                element.querySelector(".header").onmousedown = dragMouseDown
+            }
+
+            function dragMouseDown(e) {
+                // e = e || window.event;
+                e.preventDefault();
+                // get position at startup
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call fun when cursor moves
+                document.onmousemove = elementDrag;
+            }
+
+            function elementDrag(e) {
+                // e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                element.style.top = (element.offsetTop - pos2) + "px";
+                element.style.left = (element.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                // stop moving when release button
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
     </script>
 @endPushOnce

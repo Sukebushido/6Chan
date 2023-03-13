@@ -16,5 +16,5 @@
         <div class="placeholder">
         </div>
         <x-reply-component :boardName="$thread->getBoardName()" />
-    </div>
+    </div>    
 @endsection
