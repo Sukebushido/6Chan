@@ -16,13 +16,5 @@
         <div class="placeholder">
         </div>
         <x-reply-component :boardName="$thread->getBoardName()" />
-    </div>
-    <div class="test2">
-        <p id="pos1">#</p>
-        <p id="pos2">#</p>
-        <p id="pos3">#</p>
-        <p id="pos4">#</p>
-        <p id="clientX">#</p>
-        <p id="clientY">#</p>
-    </div>
+    </div>    
 @endsection

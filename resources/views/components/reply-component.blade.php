@@ -45,6 +45,7 @@
         replyLinks.forEach(link => {
             link.addEventListener('click', () => {
                 let threadId = link.parentElement.parentElement.parentElement.parentElement.parentElement
+                    .id.substring(1) || link.parentElement.parentElement.parentElement.parentElement
                     .id.substring(1);
                 if (!document.body.contains(document.querySelector('#quickReplyBox'))) {
                     const quickReply = template.content.firstElementChild.cloneNode(true);
@@ -91,7 +92,9 @@
                                 }
 
                             })
-                    })                    
+                    })
+                    quickReply.style.top = (link.offsetTop - 20) + "px";
+                    quickReply.style.left = (link.offsetLeft + 20) + "px";
                     document.querySelector('.placeholder').appendChild(quickReply);
                     dragElement(quickReply);
                 } else {
@@ -141,13 +144,6 @@
                 pos4 = e.clientY;
                 element.style.top = (element.offsetTop - pos2) + "px";
                 element.style.left = (element.offsetLeft - pos1) + "px";
-
-                posElem1.innerText = pos1
-                posElem2.innerText = pos2
-                posElem3.innerText = pos3
-                posElem4.innerText = pos4
-                clientXElem.innerText = e.clientX
-                clientYElem.innerText = e.clientY
             }
 
             function closeDragElement() {
