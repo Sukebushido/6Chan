@@ -39,7 +39,9 @@
         const posElem4 = document.getElementById('pos4');
         const clientXElem = document.getElementById('clientX');
         const clientYElem = document.getElementById('clientY');
-        const template = document.getElementById('quickReplyTemplate')
+        const template = document.getElementById('quickReplyTemplate');
+        let finalPosX = 0;
+        let finalPosY = 0;
         template.remove();
         const replyLinks = document.querySelectorAll('.id')
         replyLinks.forEach(link => {
@@ -93,8 +95,13 @@
 
                             })
                     })
-                    quickReply.style.top = (link.offsetTop - 20) + "px";
-                    quickReply.style.left = (link.offsetLeft + 20) + "px";
+                    if (finalPosX !== 0 && finalPosY !== 0) {
+                        quickReply.style.top = finalPosY;
+                        quickReply.style.left = finalPosX;
+                    } else {
+                        quickReply.style.top = (link.offsetTop - 20) + "px";
+                        quickReply.style.left = (link.offsetLeft + 20) + "px";
+                    }
                     document.querySelector('.placeholder').appendChild(quickReply);
                     dragElement(quickReply);
                 } else {
@@ -150,6 +157,8 @@
                 // stop moving when release button
                 document.onmouseup = null;
                 document.onmousemove = null;
+                finalPosX = element.style.left;
+                finalPosY = element.style.top;
             }
         }
     </script>
