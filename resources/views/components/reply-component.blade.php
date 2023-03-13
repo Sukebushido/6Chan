@@ -63,6 +63,8 @@
                     threadIdInput.value = threadId
                     quickReply.querySelector('#comment').value = ">>" + link.innerHTML
                     quickReply.querySelector('#closeCross').addEventListener('click', () => {
+                        finalPosX = quickReply.style.left;
+                        finalPosY = quickReply.style.top;
                         quickReply.remove();
                     })
                     quickReply.querySelector('#submitButton').addEventListener('click', (e) => {
@@ -157,8 +159,6 @@
                 // stop moving when release button
                 document.onmouseup = null;
                 document.onmousemove = null;
-                finalPosX = element.style.left;
-                finalPosY = element.style.top;
             }
         }
     </script>
