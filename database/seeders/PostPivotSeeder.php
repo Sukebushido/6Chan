@@ -16,8 +16,12 @@ class PostPivotSeeder extends Seeder
         $postPivots = [
             [
                 "parent_id" => 5,
-                "child_id" => 6
-            ]
+                "child_id" => 19
+            ],
+            [
+                "parent_id" => 11,
+                "child_id" => 19
+            ],
             ];
 
         foreach ($postPivots as $postPivot) {

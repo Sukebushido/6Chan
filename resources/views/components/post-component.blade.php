@@ -36,30 +36,68 @@
 @pushOnce('scripts')
     <script>
         let links = document.querySelectorAll(".backlink, .quotelink");
+        let hoveredLink = "";
 
-        links.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                let childId = link.innerText.substring(2)
-                let childElem = document.getElementById(`p${childId}`).querySelector('.reply')
-                let coordinates = {
-                    x: link.offsetLeft,
-                    y: link.offsetTop,
+        let options = {
+            root: null, // for checking relative to viewport
+            rootmargin: "0px",
+            threshold: 1.0 // callback called when 100% of object is on screen
+        };
+
+        let callback = (entries, observer) => {
+            entries.forEach((entry) => {
+                let target = entry.target
+                if (entry.isIntersecting) {
+                    target.classList.add('highlight')
+                } else if (!document.getElementById('quote-preview')) {
+                    let coordinates = {
+                        x: hoveredLink.offsetLeft,
+                        y: hoveredLink.offsetTop,
+                    }
+                    let clone = target.cloneNode(true);
+                    clone.id = "quote";
+                    let quotePreview = document.createElement("div");
+                    quotePreview.id = "quote-preview";
+                    quotePreview.appendChild(clone);
+                    document.querySelector("body").appendChild(quotePreview);
+                    quotePreview.style.left =
+                        `${coordinates.x + hoveredLink.offsetWidth + 5}px`
+                    quotePreview.style.top =
+                        `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
                 }
-                let clone = childElem.cloneNode(true);
-                clone.id = "quote";
-                let quotePreview = document.createElement("div");
-                quotePreview.id = "quote-preview";
-                quotePreview.appendChild(clone);
-                document.querySelector("body").appendChild(quotePreview);
-                quotePreview.style.left = `${coordinates.x + link.offsetWidth + 5}px`
-                quotePreview.style.top =
-                    `${coordinates.y - (quotePreview.offsetHeight / 2 - link.offsetHeight / 2)}px`
+            });
+        }
+        
+
+        let observer = new IntersectionObserver(callback, options);
+        
+        links.forEach(link => {
+            let childId = link.innerText.substring(2)
+            let childElem = document.getElementById(`p${childId}`).querySelector('.reply')
+
+            link.addEventListener('pointerenter', (e) => {
+                hoveredLink = e.target
+                observer.observe(childElem);
             })
-            link.addEventListener('mouseleave', () => {
+            
+            link.addEventListener('pointerleave', () => {
+                observer.unobserve(childElem)
+                hoveredLink = ""
                 if (document.getElementById("quote-preview")) {
                     document.getElementById("quote-preview").remove();
+                } else {
+                    highlighted = document.querySelectorAll('.highlight');
+                    highlighted.forEach(element => {
+                        element.classList.remove('highlight')
+                    })
                 }
+                isMouseOverLink = false
             })
         });
+        
+        let pointerLeaveEvent = new Event('pointerleave')
+        document.onscroll = () => {
+            document.dispatchEvent(pointerLeaveEvent)
+        }
     </script>
 @endPushOnce()
