@@ -35,6 +35,7 @@
 
 @pushOnce('scripts')
     <script>
+        let delay;
         let links = document.querySelectorAll(".backlink, .quotelink");
         let hoveredLink = "";
 
@@ -67,10 +68,10 @@
                 }
             });
         }
-        
+
 
         let observer = new IntersectionObserver(callback, options);
-        
+
         links.forEach(link => {
             let childId = link.innerText.substring(2)
             let childElem = document.getElementById(`p${childId}`).querySelector('.reply')
@@ -79,25 +80,30 @@
                 hoveredLink = e.target
                 observer.observe(childElem);
             })
-            
+
             link.addEventListener('pointerleave', () => {
                 observer.unobserve(childElem)
                 hoveredLink = ""
                 if (document.getElementById("quote-preview")) {
                     document.getElementById("quote-preview").remove();
-                } else {
-                    highlighted = document.querySelectorAll('.highlight');
-                    highlighted.forEach(element => {
-                        element.classList.remove('highlight')
-                    })
                 }
+                highlighted = document.querySelectorAll('.highlight');
+                highlighted.forEach(element => {
+                    element.classList.remove('highlight')
+                })
                 isMouseOverLink = false
             })
         });
-        
+
         let pointerLeaveEvent = new Event('pointerleave')
         document.onscroll = () => {
-            document.dispatchEvent(pointerLeaveEvent)
-        }
+            clearTimeout(delay)
+            delay = setTimeout(() => {
+                console.log('kek');
+                links.forEach(link => {
+                    link.dispatchEvent(pointerLeaveEvent)
+                })
+            }, 500);
+        };
     </script>
 @endPushOnce()
