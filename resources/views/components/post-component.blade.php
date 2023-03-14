@@ -99,7 +99,6 @@
         document.onscroll = () => {
             clearTimeout(delay)
             delay = setTimeout(() => {
-                console.log('kek');
                 links.forEach(link => {
                     link.dispatchEvent(pointerLeaveEvent)
                 })
