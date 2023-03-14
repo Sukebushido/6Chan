@@ -41,7 +41,59 @@ class PostSeeder extends Seeder
             ],
             [
                 "thread_id" => 4,
-                "content" => "<a href='#p5' class='quotelink'>>>5</a><br>This mf gets it, imagine wakin up to this anon. You're fucked no matter what, you better GTFO of here while you still can",
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content BUT with backlink",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "filler content",
+            ],
+            [
+                "thread_id" => 4,
+                "content" => "<a href='#p5' class='quotelink'>>>5</a><br><a href='#p5' class='quotelink'>>>11</a><br>This mf gets it, imagine wakin up to this anon. You're fucked no matter what, you better GTFO of here while you still can",
             ],
             [
                 "thread_id" => 7,

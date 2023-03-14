@@ -6,6 +6,9 @@
 
 .reply {
     background-color: $post-darker;
+    padding: 2px;
+    border-bottom: 1px $border-color solid;
+    border-right: 1px $border-color solid;
 }
 
 .highlight {
@@ -21,12 +24,22 @@
     margin: 4px 2px;
 }
 
+.backlink-container {
+    color: #34345C !important;
+    font-size: 0.8em !important;
+    >.backlink {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+
+
 .container {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
     flex-flow: nowrap;
-    font-size: 13.3px;
 }
 
 .content-container {
@@ -50,4 +63,5 @@
 
 .quotelink {
     color: red;
+    text-decoration: underline;
 }

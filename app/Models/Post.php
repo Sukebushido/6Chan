@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
 {
@@ -50,6 +51,16 @@ class Post extends Model
     public function getThreadTitle()
     {
         return $this->getThread()->title;
+    }
+
+    // Many to many test
+
+    public function parent(): BelongsToMany{
+        return $this->belongsToMany(Post::class, "post_pivot", "child_id", "parent_id");
+    }
+
+    public function children(): BelongsToMany{
+        return $this->belongsToMany(Post::class, "post_pivot", "parent_id", "child_id");
     }
 
 }
