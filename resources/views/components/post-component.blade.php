@@ -35,15 +35,15 @@
 
 @pushOnce('scripts')
     <script>
-        let backlinks = document.querySelectorAll(".backlink");
+        let links = document.querySelectorAll(".backlink, .quotelink");
 
-        backlinks.forEach(backlink => {
-            backlink.addEventListener('mouseenter', () => {
-                let childId = backlink.innerText.substring(2)
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                let childId = link.innerText.substring(2)
                 let childElem = document.getElementById(`p${childId}`).querySelector('.reply')
                 let coordinates = {
-                    x: backlink.offsetLeft,
-                    y: backlink.offsetTop,
+                    x: link.offsetLeft,
+                    y: link.offsetTop,
                 }
                 let clone = childElem.cloneNode(true);
                 clone.id = "quote";
@@ -51,11 +51,11 @@
                 quotePreview.id = "quote-preview";
                 quotePreview.appendChild(clone);
                 document.querySelector("body").appendChild(quotePreview);
-                quotePreview.style.left = `${coordinates.x + backlink.offsetWidth + 5}px`
+                quotePreview.style.left = `${coordinates.x + link.offsetWidth + 5}px`
                 quotePreview.style.top =
-                    `${coordinates.y - (quotePreview.offsetHeight / 2 - backlink.offsetHeight / 2)}px`
+                    `${coordinates.y - (quotePreview.offsetHeight / 2 - link.offsetHeight / 2)}px`
             })
-            backlink.addEventListener('mouseleave', () => {
+            link.addEventListener('mouseleave', () => {
                 if (document.getElementById("quote-preview")) {
                     document.getElementById("quote-preview").remove();
                 }
