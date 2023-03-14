@@ -84,13 +84,13 @@
                             }).catch(error => {
                                 errorMessage.innerText = "";
                                 // stuff to do here
-                                console.log(error.reponse.message);
                                 let errors = error.response.data.errors;
-                                if (errors = null) {
+                                if (errors == null) {
                                     errorMessage.innerText = error.message
                                 } else {
+                                    let errors2 = Object.values(errors);
                                     for (let error of Object.values(errors)) {
-                                        errorMessage.innerText += `${error[0]}\n`
+                                        errorMessage.innerText += `${error[0]}\n`;
                                     }
                                     errorMessage.classList.remove('hidden')
                                 }
