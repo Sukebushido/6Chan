@@ -52,4 +52,10 @@ class Post extends Model
         return $this->getThread()->title;
     }
 
+    // Many to many test
+
+    public function children(){
+        
+    }
+
 }
