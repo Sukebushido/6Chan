@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BoardSeeder::class,
             ThreadSeeder::class,
-            PostSeeder::class
+            PostSeeder::class,
+            PostPivotSeeder::class
         ]);
     }
 }

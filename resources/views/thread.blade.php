@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="test main">
+    <div class="main">
         <div class="top_bar">
             {{-- {{ dd($thread->getBoard()) }} --}}
             <span>[<a href="{{ route('board', ['boardName' => $thread->getBoardName()]) }}">Return</a>]</span>
