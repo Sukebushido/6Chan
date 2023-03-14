@@ -32,3 +32,34 @@
         </div>
     </div>
 </div>
+
+@pushOnce('scripts')
+    <script>
+        let backlinks = document.querySelectorAll(".backlink");
+
+        backlinks.forEach(backlink => {
+            backlink.addEventListener('mouseenter', () => {
+                let childId = backlink.innerText.substring(2)
+                let childElem = document.getElementById(`p${childId}`).querySelector('.reply')
+                let coordinates = {
+                    x: backlink.offsetLeft,
+                    y: backlink.offsetTop,
+                }
+                let clone = childElem.cloneNode(true);
+                clone.id = "quote";
+                let quotePreview = document.createElement("div");
+                quotePreview.id = "quote-preview";
+                quotePreview.appendChild(clone);
+                document.querySelector("body").appendChild(quotePreview);
+                quotePreview.style.left = `${coordinates.x + backlink.offsetWidth + 5}px`
+                quotePreview.style.top =
+                    `${coordinates.y - (quotePreview.offsetHeight / 2 - backlink.offsetHeight / 2)}px`
+            })
+            backlink.addEventListener('mouseleave', () => {
+                if (document.getElementById("quote-preview")) {
+                    document.getElementById("quote-preview").remove();
+                }
+            })
+        });
+    </script>
+@endPushOnce()

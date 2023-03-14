@@ -7,6 +7,8 @@
 .reply {
     background-color: $post-darker;
     padding: 2px;
+    border-bottom: 1px $border-color solid;
+    border-right: 1px $border-color solid;
 }
 
 .highlight {
