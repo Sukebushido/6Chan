@@ -1,9 +1,8 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="main">
+    <div class="thread main" id="t{{$thread->id}}">
         <div class="top_bar">
-            {{-- {{ dd($thread->getBoard()) }} --}}
             <span>[<a href="{{ route('board', ['boardName' => $thread->getBoardName()]) }}">Return</a>]</span>
             <span>[<a href="{{ route('catalog', ['boardName' => $thread->getBoardName()]) }}">Catalog</a>]</span>
             <span>[<a href="">Bottom</a>]</span>
