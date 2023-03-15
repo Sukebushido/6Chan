@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="main">
+    <div class="main d-flex f-column">
         <p>I'm a blue board</p>
         @foreach ($threads as $thread)
             <div class="thread" id="t{{ $thread->id }}">

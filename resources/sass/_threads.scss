@@ -4,6 +4,14 @@
     background-color: $post;
 }
 
+.d-flex{
+    display: flex;
+}
+
+.f-column {
+    flex-flow: column nowrap;
+}
+
 .reply {
     background-color: $post-darker;
     padding: 2px;
