@@ -3,6 +3,7 @@
 @section('content')
     @foreach ($OPs as $OP)
     {{-- {{ $OP->getBoard() }} --}}
+    <p>R : <span><strong>{{ count($OP->getThread()->getPosts()) }}</strong></span></p>
         <p>
             <a href="{{ route('thread', 
                 ['boardName' => $OP->getBoardId(), 
