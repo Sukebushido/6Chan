@@ -79,8 +79,10 @@
                                     "file": imageInput.value
                                 })
                             .then(function(response) {
+                                /* Refresh page */
                                 errorMessage.innerText = "";
                                 errorMessage.classList.add('hidden')
+                                // window.location.reload();
                             }).catch(error => {
                                 errorMessage.innerText = "";
                                 // stuff to do here
@@ -134,13 +136,12 @@
             }
 
             function dragMouseDown(e) {
-                // e = e || window.event;
                 e.preventDefault();
                 // get position at startup
                 pos3 = e.clientX;
                 pos4 = e.clientY;
                 document.onmouseup = closeDragElement;
-                // call fun when cursor moves
+                // call function when cursor moves
                 document.onmousemove = elementDrag;
             }
 
