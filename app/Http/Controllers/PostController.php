@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -24,7 +25,13 @@ class PostController extends Controller
         ]);
 
         try {
-            true;
+            // return($request->all());
+            $post = Post::create([
+                "title" => $request->name,
+                "content" => $request->comment,
+                "author" => "Anonymous",
+                "thread_id" => $request->threadId
+            ]);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => 'error',

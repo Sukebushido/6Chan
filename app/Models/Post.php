@@ -13,9 +13,10 @@ class Post extends Model
     protected $fillable = [
         "title",
         "author",
-        // img,
+        "img",
         "OP",
-        "content"
+        "content",
+        "thread_id"
     ];
 
     // protected function getAllPostsByThread(int $threadId){
