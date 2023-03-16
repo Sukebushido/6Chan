@@ -2,18 +2,9 @@
 
 @section('content')
     <div class="main d-flex f-column">
-        <div class="top-bar d-flex f-column">
-            <div class="thread-border"></div>
-            <div class="content">
-                <span>[<a href="{{ route('board', ['boardName' => $board->name]) }}">Return</a>]</span>
-                <span>[<a href="">Bottom</a>]</span>
-                <span>[<a href="">Refresh</a>]</span>
-            </div>
-            <div class="thread-border"></div>
-        </div>
+        <x-topbar-component :boardName="$board->name" :showReturn=true :showArchive=true :showBottom=true :showRefresh=true/>
         <div class="thread d-flex">
             @foreach ($OPs as $OP)
-                {{-- {{ $OP->getBoard() }} --}}
                 <div class="thumb-container">
                     <a
                         href="{{ route('thread', [

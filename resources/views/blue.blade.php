@@ -2,13 +2,7 @@
 
 @section('content')
     <div class="main d-flex f-column">
-        <div class="top-bar d-flex f-column">
-            <div class="thread-border"></div>
-            <div class="content">
-                <span>[<a href="{{ route('catalog', ['boardName' => $boardName]) }}">Catalog</a>]</span>
-            </div>
-            <div class="thread-border"></div>
-        </div>
+        <x-topbar-component :boardName="$boardName" :showCatalog=true :showArchive=true/>
         @foreach ($threads as $thread)
             <div class="thread" id="t{{ $thread->id }}">
                 @foreach ($thread->getPosts() as $post)
