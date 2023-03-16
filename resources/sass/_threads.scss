@@ -1,5 +1,7 @@
 @import "variables";
 
+
+
 .main {
     background-color: $post;
 }
@@ -72,4 +74,16 @@
 .quotelink {
     color: red;
     text-decoration: underline;
+}
+
+.thread-border {
+    border-bottom: $border-color solid 1px;
+    width: calc(100vw - 1em);
+    align-self: center;
+}
+
+.top-bar {
+    .content {
+        padding: .5em;
+    }
 }

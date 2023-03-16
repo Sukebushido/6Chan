@@ -11,6 +11,6 @@ class CatalogController extends Controller
         $board = Board::where(["name" => $boardName])->first();
         $OPs = $board->getOPs();
 
-        return view('catalog', ["OPs" => $OPs]);
+        return view('catalog', ["OPs" => $OPs, "board" => $board]);
     }
 }
