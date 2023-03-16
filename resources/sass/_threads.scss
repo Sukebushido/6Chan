@@ -1,7 +1,5 @@
 @import "variables";
 
-
-
 .main {
     background-color: $post;
 }
@@ -43,8 +41,6 @@
     }
 }
 
-
-
 .container {
     display: flex;
     align-items: flex-start;
@@ -78,7 +74,7 @@
 
 .thread-border {
     border-bottom: $border-color solid 1px;
-    width: calc(100vw - 1em);
+    width: calc(100% - 1em);
     align-self: center;
 }
 
