@@ -85,7 +85,6 @@
                                 // window.location.reload();
                             }).catch(error => {
                                 errorMessage.innerText = "";
-                                // stuff to do here
                                 let errors = error.response.data.errors;
                                 if (errors == null) {
                                     errorMessage.innerText = error.message

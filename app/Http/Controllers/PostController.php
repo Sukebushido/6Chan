@@ -39,21 +39,17 @@ class PostController extends Controller
             if (preg_match($regex, $request->comment)) {
                 preg_match_all($regex, $request->comment, $matches);
                 $rawPostIDs = $matches[0];
-                // Trim posts
-                $linkedPosts = [];
+
                 foreach ($rawPostIDs as $rawPostID) {
                     $postID = substr($rawPostID, 2);
-                    $post = Post::find($postID);
-                    $post ? $linkedPosts[] = $post : "";
-                }
-
-                foreach ($linkedPosts as $post) {
                     PostPivot::create([
-                        "parent_id" => $post->id,
+                        "parent_id" => $postID,
                         "child_id" => $currentPost->id
                     ]);
                 }
+
             } else {
+
             }
             DB::commit();
         } catch (ValidationException $e) {
