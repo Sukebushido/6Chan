@@ -61,7 +61,8 @@
                     const errorMessage = quickReply.querySelector('#errorMessage');
                     quickReply.querySelector('#template_thread_id').innerHTML = threadId
                     threadIdInput.value = threadId
-                    quickReply.querySelector('#comment').value = ">>" + link.innerHTML
+                    quickReply.querySelector('#comment').value = ">>" + link.innerHTML + "\n"
+                    
                     quickReply.querySelector('#closeCross').addEventListener('click', () => {
                         finalPosX = quickReply.style.left;
                         finalPosY = quickReply.style.top;
@@ -106,6 +107,7 @@
                         quickReply.style.left = (link.offsetLeft + 20) + "px";
                     }
                     document.querySelector('.placeholder').appendChild(quickReply);
+                    quickReply.querySelector('#comment').focus();
                     dragElement(quickReply);
                 } else {
                     const quickReply = document.getElementById('quickReplyBox')
@@ -118,8 +120,10 @@
                         threadIdInput.value = threadId
                         quickReply.querySelector('#template_thread_id').innerHTML = threadId
                         comment.value = ">>" + link.innerHTML;
+                        quickReply.querySelector('#comment').focus();
                     } else {
-                        comment.value = prevCommentValue + "\n" + ">>" + link.innerHTML
+                        comment.value = prevCommentValue + ">>" + link.innerHTML + "\n"
+                        quickReply.querySelector('#comment').focus();
                     }
                 }
             })
