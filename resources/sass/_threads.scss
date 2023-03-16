@@ -4,6 +4,14 @@
     background-color: $post;
 }
 
+.d-flex{
+    display: flex;
+}
+
+.f-column {
+    flex-flow: column nowrap;
+}
+
 .reply {
     background-color: $post-darker;
     padding: 2px;
@@ -32,8 +40,6 @@
         cursor: pointer;
     }
 }
-
-
 
 .container {
     display: flex;
@@ -64,4 +70,16 @@
 .quotelink {
     color: red;
     text-decoration: underline;
+}
+
+.thread-border {
+    border-bottom: $border-color solid 1px;
+    width: calc(100% - 1em);
+    align-self: center;
+}
+
+.top-bar {
+    .content {
+        padding: .5em;
+    }
 }

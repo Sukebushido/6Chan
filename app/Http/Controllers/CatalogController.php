@@ -10,6 +10,7 @@ class CatalogController extends Controller
     public function index($boardName){
         $board = Board::where(["name" => $boardName])->first();
         $OPs = $board->getOPs();
-        return view('catalog', ["OPs" => $OPs]);
+
+        return view('catalog', ["OPs" => $OPs, "board" => $board]);
     }
 }

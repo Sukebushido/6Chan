@@ -1,13 +1,8 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="thread main" id="t{{$thread->id}}">
-        <div class="top_bar">
-            <span>[<a href="{{ route('board', ['boardName' => $thread->getBoardName()]) }}">Return</a>]</span>
-            <span>[<a href="{{ route('catalog', ['boardName' => $thread->getBoardName()]) }}">Catalog</a>]</span>
-            <span>[<a href="">Bottom</a>]</span>
-            <span>[<a href="">Update</a>]</span>
-        </div>
+<div class="thread main d-flex f-column" id="t{{ $thread->id }}">
+    <x-topbar-component :boardName="$thread->getBoardName()" :showReturn=true :showCatalog=true :showBottom=true :showUpdate=true />
         @foreach ($thread->getPosts() as $post)
             <x-post-component :post="$post" />
         @endforeach
@@ -15,5 +10,5 @@
         <div class="placeholder">
         </div>
         <x-reply-component :boardName="$thread->getBoardName()" />
-    </div>    
+    </div>
 @endsection
