@@ -36,6 +36,7 @@ class PostController extends Controller
             ]);            
 
             $quoteRegex = "/(>{2}[0-9]+)\b/";
+            
             if (preg_match($quoteRegex, $request->comment)) {
                 preg_match_all($quoteRegex, $request->comment, $matches);
                 $rawPostIDs = $matches[0];
@@ -45,14 +46,12 @@ class PostController extends Controller
                 foreach ($rawPostIDs as $rawPostID) {
                     $postID = substr($rawPostID, 2);
                     $relatedPost = Post::find($postID);
-                    // Add arrow to signify CrossThread
+                    // Add arrow to quote if CrossThread
                     if($relatedPost->thread_id != $request->threadId){
                         $newcontent = str_replace($rawPostID, $rawPostID." →", $currentPost->content);
                         $currentPost->content = $newcontent;
                         $currentPost->save();
-                    } else {
-                        return('kek');
-                    }
+                    }                     
                     PostPivot::create([
                         "parent_id" => $postID,
                         "child_id" => $currentPost->id
