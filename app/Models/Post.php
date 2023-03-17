@@ -64,4 +64,10 @@ class Post extends Model
         return $this->belongsToMany(Post::class, "post_pivot", "parent_id", "child_id");
     }
 
+    // Evite de récupérer les quotes d'une autre thread / board
+    
+    public function trueChildren(){
+        return $this->children()->where(["thread_id"=>$this->getThreadId()]);
+    }
+
 }

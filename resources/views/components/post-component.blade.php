@@ -20,7 +20,10 @@
                 : '' !!}
             <i class="fa-solid fa-caret-right"></i>
             <span class="backlink-container">
-                @foreach ($post->children as $child)
+                {{-- @foreach ($post->children as $child)
+                    <span class="backlink">>>{{ $child->id ?? '' }}</span>
+                @endforeach --}}
+                @foreach ($post->trueChildren as $child)
                     <span class="backlink">>>{{ $child->id ?? '' }}</span>
                 @endforeach
             </span>
@@ -39,21 +42,6 @@
         let quoteRegex = /(>{2}[0-9]+)\b/g;
         let quoteRegexWithArrow = /^>>\d+(\s→)?$/gm;
 
-        contents.forEach(content => {
-            // console.log({"OG string" : content.innerText});
-            // if(content.innerText.match(quoteRegexWithArrow)){
-            //     let quoteIDs = content.innerText.match(quoteRegexWithArrow);
-            //     console.log({"quoteID" :quoteIDs});
-            //     let formattedString = content.innerText;
-            //     quoteIDs.forEach(quoteID => {
-            //         console.log({"quoteID " : quoteID});
-            //         formattedString = formattedString.replace(quoteID, `<a href='#p${quoteID.substring(2)}' class='quotelink'>${quoteID}</a></br>`);
-            //     });
-            //     content.innerHTML = formattedString
-            // } else {
-            //     console.log("none");
-            // }
-        })
         // Links logic
         let delay;
         let links = document.querySelectorAll(".backlink, .quotelink");
