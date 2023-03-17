@@ -46,12 +46,18 @@ class PostController extends Controller
                 foreach ($rawPostIDs as $rawPostID) {
                     $postID = substr($rawPostID, 2);
                     $relatedPost = Post::find($postID);
+                    $newcontent = "";
                     // Add arrow to quote if CrossThread
                     if($relatedPost->thread_id != $request->threadId){
-                        $newcontent = str_replace($rawPostID, $rawPostID." →", $currentPost->content);
-                        $currentPost->content = $newcontent;
-                        $currentPost->save();
-                    }                     
+                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID." →</a>", $currentPost->content);
+                    } else {
+                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID."</a>", $currentPost->content);
+                    }
+                    $currentPost->content = $newcontent;
+                    $currentPost->save();
+
+                    
+                    // HTML directement dans le plaintext
                     PostPivot::create([
                         "parent_id" => $postID,
                         "child_id" => $currentPost->id

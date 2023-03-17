@@ -40,19 +40,19 @@
         let quoteRegexWithArrow = /^>>\d+(\s→)?$/gm;
 
         contents.forEach(content => {
-            console.log({"OG string" : content.innerText});
-            if(content.innerText.match(quoteRegexWithArrow)){
-                let quoteIDs = content.innerText.match(quoteRegexWithArrow);
-                console.log({"quoteID" :quoteIDs});
-                let formattedString = content.innerText;
-                quoteIDs.forEach(quoteID => {
-                    console.log({"quoteID " : quoteID});
-                    formattedString = formattedString.replace(quoteID, `<a href='#p${quoteID.substring(2)}' class='quotelink'>${quoteID}</a></br>`);
-                });
-                content.innerHTML = formattedString
-            } else {
-                console.log("none");
-            }
+            // console.log({"OG string" : content.innerText});
+            // if(content.innerText.match(quoteRegexWithArrow)){
+            //     let quoteIDs = content.innerText.match(quoteRegexWithArrow);
+            //     console.log({"quoteID" :quoteIDs});
+            //     let formattedString = content.innerText;
+            //     quoteIDs.forEach(quoteID => {
+            //         console.log({"quoteID " : quoteID});
+            //         formattedString = formattedString.replace(quoteID, `<a href='#p${quoteID.substring(2)}' class='quotelink'>${quoteID}</a></br>`);
+            //     });
+            //     content.innerHTML = formattedString
+            // } else {
+            //     console.log("none");
+            // }
         })
         // Links logic
         let delay;
