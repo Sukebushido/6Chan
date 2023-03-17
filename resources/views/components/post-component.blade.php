@@ -94,7 +94,13 @@
 
         links.forEach(link => {
             let childId = link.innerText.substring(2)
-            let childElem = document.getElementById(`p${childId}`).querySelector('.reply')
+            let childElem;
+            /* Hotfix temporaire pour éviter le crash du JS en cas de quote d'un post d'un autre thread */
+            if(document.getElementById(`p${childId}`)){
+                childElem = document.getElementById(`p${childId}`).querySelector('.reply')
+            } else {
+                return
+            }
 
             link.addEventListener('pointerenter', (e) => {
                 hoveredLink = e.target
