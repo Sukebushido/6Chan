@@ -83,7 +83,7 @@
                                 /* Refresh page */
                                 errorMessage.innerText = "";
                                 errorMessage.classList.add('hidden')
-                                window.location.reload();
+                                // window.location.reload();
                             }).catch(error => {
                                 errorMessage.innerText = "";
                                 if (error.response.data.message.includes(

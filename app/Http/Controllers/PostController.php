@@ -26,30 +26,38 @@ class PostController extends Controller
             "threadId" => "Wrong thread Id"
         ]);
 
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             $currentPost = Post::create([
                 "title" => $request->name,
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId
-            ]);
+            ]);            
 
             $quoteRegex = "/(>{2}[0-9]+)\b/";
             if (preg_match($quoteRegex, $request->comment)) {
                 preg_match_all($quoteRegex, $request->comment, $matches);
                 $rawPostIDs = $matches[0];
 
+                // Need to find if quoted post in current Thread or Not
+
                 foreach ($rawPostIDs as $rawPostID) {
                     $postID = substr($rawPostID, 2);
+                    $relatedPost = Post::find($postID);
+                    // Add arrow to signify CrossThread
+                    if($relatedPost->thread_id != $request->threadId){
+                        $newcontent = str_replace($rawPostID, $rawPostID." →", $currentPost->content);
+                        $currentPost->content = $newcontent;
+                        $currentPost->save();
+                    } else {
+                        return('kek');
+                    }
                     PostPivot::create([
                         "parent_id" => $postID,
                         "child_id" => $currentPost->id
                     ]);
                 }
-
-            } else {
-
             }
             DB::commit();
         } catch (ValidationException $e) {
@@ -58,6 +66,7 @@ class PostController extends Controller
                 'msg' => 'error',
                 'errors' => $e->errors()
             ], 422);
+            DB::rollback();
         }
         return response()->json($request->all());
     }
