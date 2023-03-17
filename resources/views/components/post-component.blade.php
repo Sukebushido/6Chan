@@ -26,15 +26,35 @@
             </span>
         </div>
         <div class="content-container">
-            <p class="content">{!! $post->content !!}</p>
+            <p class="post-content">{!! nl2br($post->content) !!}</p>
         </div>
         <div class="test">
         </div>
     </div>
 </div>
-
 @pushOnce('scripts')
     <script>
+        // Backlinks logic
+        let contents = document.querySelectorAll('.post-content');
+        let quoteRegex = /(>{2}[0-9]+)\b/g;
+        contents.forEach(content => {
+            console.log({"OG string" : content.innerText});
+            if(content.innerText.match(quoteRegex)){
+                let quoteIDs = content.innerText.match(quoteRegex);
+                let n = 0
+                let formattedString = content.innerText;
+                quoteIDs.forEach(quoteID => {
+                    console.log({"quoteID " : quoteID});
+                    formattedString = formattedString.replace(quoteID, `<a href='#p${quoteID.substring(2)}' class='quotelink'>${quoteID}</a></br>`);
+                    n++;
+                });
+                content.innerHTML = formattedString
+                console.log({"Final" : `${n} Replacements`});
+            } else {
+                console.log("none");
+            }
+        })
+        // Links logic
         let delay;
         let links = document.querySelectorAll(".backlink, .quotelink");
         let hoveredLink = "";

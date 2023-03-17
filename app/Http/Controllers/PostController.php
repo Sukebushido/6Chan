@@ -35,9 +35,9 @@ class PostController extends Controller
                 "thread_id" => $request->threadId
             ]);
 
-            $regex = "/(>{2}[0-9]+)\b/";
-            if (preg_match($regex, $request->comment)) {
-                preg_match_all($regex, $request->comment, $matches);
+            $quoteRegex = "/(>{2}[0-9]+)\b/";
+            if (preg_match($quoteRegex, $request->comment)) {
+                preg_match_all($quoteRegex, $request->comment, $matches);
                 $rawPostIDs = $matches[0];
 
                 foreach ($rawPostIDs as $rawPostID) {

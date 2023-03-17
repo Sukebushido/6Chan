@@ -62,7 +62,7 @@
                     quickReply.querySelector('#template_thread_id').innerHTML = threadId
                     threadIdInput.value = threadId
                     quickReply.querySelector('#comment').value = ">>" + link.innerHTML + "\n"
-                    
+
                     quickReply.querySelector('#closeCross').addEventListener('click', () => {
                         finalPosX = quickReply.style.left;
                         finalPosY = quickReply.style.top;
@@ -83,20 +83,27 @@
                                 /* Refresh page */
                                 errorMessage.innerText = "";
                                 errorMessage.classList.add('hidden')
-                                // window.location.reload();
+                                window.location.reload();
                             }).catch(error => {
                                 errorMessage.innerText = "";
-                                let errors = error.response.data.errors;
-                                if (errors == null) {
-                                    errorMessage.innerText = error.message
-                                } else {
-                                    let errors2 = Object.values(errors);
-                                    for (let error of Object.values(errors)) {
-                                        errorMessage.innerText += `${error[0]}\n`;
-                                    }
+                                if (error.response.data.message.includes(
+                                        'SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails'
+                                    )) {
+                                    errorMessage.innerText =
+                                        "Problem in writing in database, maybe your quotations are messed up";
                                     errorMessage.classList.remove('hidden')
+                                } else {
+                                    let errors = error.response.data.errors;
+                                    if (errors == null) {
+                                        errorMessage.innerText = error.message
+                                    } else {
+                                        let errors2 = Object.values(errors);
+                                        for (let error of Object.values(errors)) {
+                                            errorMessage.innerText += `${error[0]}\n`;
+                                        }
+                                        errorMessage.classList.remove('hidden')
+                                    }
                                 }
-
                             })
                     })
                     if (finalPosX !== 0 && finalPosY !== 0) {
