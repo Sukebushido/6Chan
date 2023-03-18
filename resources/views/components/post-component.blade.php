@@ -137,11 +137,11 @@
                 function fillAndAppendTemplate(data, childID, hoveredLink) {
                     let clone = crossTemplate.content.firstElementChild.cloneNode(true);
                     let quote = data.filter(entry => entry.id == childID)[0];
-                    console.log(new Date(quote.created_at));
                     clone.querySelector('.id').innerText = childID
                     clone.querySelector('.title').innerText = quote.title
                     clone.querySelector('.author').innerText = quote.author
-                    clone.querySelector('.created-at').innerText = quote.created_at
+                    // Necessary for formatting
+                    clone.querySelector('.created-at').innerText = quote.created_at.replace("T", " ").substring(0, quote.created_at.length - 8)
                     clone.querySelector('.post-content').innerHTML = quote.content
 
                     let coordinates = {
