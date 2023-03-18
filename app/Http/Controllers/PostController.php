@@ -53,6 +53,11 @@ class PostController extends Controller
                     } else {
                         $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID."</a>", $currentPost->content);
                     }
+
+                    // Add (OP) to quote if OP
+                    if($relatedPost->OP){
+                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID." (OP)</a>", $currentPost->content);
+                    }
                     $currentPost->content = $newcontent;
                     $currentPost->save();
 

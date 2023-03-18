@@ -1,6 +1,6 @@
 <div class="post container" id="p{{ $post->id }}">
     {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
-    <div class="{{ $post->OP ? 'main' : 'reply' }}">
+    <div class="{{ $post->OP ? 'main' : 'reply' }} inner-post">
         <div class="title-container">
             <span class="title">{{ $post->title }}</span>
             <span class="author">{{ $post->author }}</span>
@@ -109,39 +109,42 @@
             let observer = new IntersectionObserver(callback, options);
 
             links.forEach(link => {
-                let childId = link.innerText.substring(2)
+                const trimRegex = /\d+/g
+                let rawChildId = link.innerText;
+                let childId = link.innerText.match(trimRegex)[0];
                 let childElem;
 
                 link.addEventListener('pointerenter', (e) => {
-                    if (childId.includes("→")) {
-                        let childIdTrimmed = childId.substring(0, childId.length - 2);
+                    if (rawChildId.includes("→")) {
                         if (!fetchedData || fetchedData && (!currentPostsInFetchedThread.includes(
-                                parseInt(childIdTrimmed)))) {
-                            axios.get(`{!! '/api/' . $post->getBoardName() . '/${childIdTrimmed}' !!}`)
+                                parseInt(childId)))) {
+                            axios.get(`{!! '/api/' . $post->getBoardName() . '/${childId}' !!}`)
                                 .then(res => {
                                     fetchedData = (res.data);
                                     currentPostsInFetchedThread = fetchedData.map(entry => entry.id)
                                 })
                                 .then(res => {
-                                    fillAndAppendTemplate(fetchedData, childIdTrimmed, e.target)
+                                    fillAndAppendTemplate(fetchedData, childId, e.target)
                                 })
-                            .catch(err => {
-                                console.log(err);
-                            })
+                                .catch(err => {
+                                    console.log(err);
+                                })
                         } else {
-                            fillAndAppendTemplate(fetchedData, childIdTrimmed, e.target)
+                            fillAndAppendTemplate(fetchedData, childId, e.target)
                         }
                     } else {
-                        childElem = document.getElementById(`p${childId}`).querySelector('.reply')
+                        console.log(childId);
+                        childElem = document.getElementById(`p${childId}`).querySelector('.inner-post')
+                        console.log(childElem);
                         hoveredLink = e.target
                         observer.observe(childElem);
                     }
                 })
 
-                function fillAndAppendTemplate(data, id, hoveredLink) {
+                function fillAndAppendTemplate(data, childID, hoveredLink) {
                     let clone = crossTemplate.content.firstElementChild.cloneNode(true);
-                    let quote = data.filter(entry => entry.id == id)[0];
-                    clone.querySelector('.id').innerText = id
+                    let quote = data.filter(entry => entry.id == childID)[0];
+                    clone.querySelector('.id').innerText = childID
                     clone.querySelector('.title').innerText = quote.title
                     clone.querySelector('.author').innerText = quote.author
                     clone.querySelector('.created-at').innerText = quote.created_at
@@ -156,6 +159,7 @@
                     quotePreview.id = "quote-preview";
                     quotePreview.appendChild(clone);
                     document.querySelector("body").appendChild(quotePreview);
+
                     quotePreview.style.left =
                         `${coordinates.x + hoveredLink.offsetWidth + 5}px`
                     quotePreview.style.top =
