@@ -29,7 +29,7 @@ class ThreadSeeder extends Seeder
             [
                 "id" => 7,
                 "title" => "hello",
-                "board_id" => 2
+                "board_id" => 1
             ]
         ];
 

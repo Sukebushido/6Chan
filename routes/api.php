@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/{boardName}'], function(){
-    Route::get('/{threadId}', [ThreadController::class, 'index'])->name('APIthread');
+    Route::get('/{postId}', [ThreadController::class, 'index'])->name('APIthread');
 });
