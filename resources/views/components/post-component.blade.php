@@ -43,11 +43,6 @@
                     <a href="#" class="id" title="Reply to this post"></a>
                 </span>
                 <i class="fa-solid fa-caret-right"></i>
-                <span class="backlink-container">
-                    @foreach ($post->trueChildren as $child)
-                        <span class="backlink">>>{{ $child->id ?? '' }}</span>
-                    @endforeach
-                </span>
             </div>
             <div class="content-container">
                 <p class="post-content"></p>
@@ -133,9 +128,7 @@
                             fillAndAppendTemplate(fetchedData, childId, e.target)
                         }
                     } else {
-                        console.log(childId);
                         childElem = document.getElementById(`p${childId}`).querySelector('.inner-post')
-                        console.log(childElem);
                         hoveredLink = e.target
                         observer.observe(childElem);
                     }
