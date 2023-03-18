@@ -33,10 +33,24 @@ class PostController extends Controller
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId
-            ]);            
+            ]);
 
             $quoteRegex = "/(>{2}[0-9]+)\b/";
-            
+            $greentextRegex = "/^>[^>\n]+$/m";
+
+            // Handle greentexts
+            if (preg_match($greentextRegex, $request->comment)) {
+                preg_match_all($greentextRegex, $request->comment, $matches);
+                $greentextLines = $matches[0];
+
+                foreach($greentextLines as $greentextLine){
+                    $newcontent = str_replace($greentextLine, "<span class='greentext'>".$greentextLine."</span>", $currentPost->content);
+                    $currentPost->content = $newcontent;
+                    $currentPost->save();
+                }
+            }
+
+            // Handle quotes
             if (preg_match($quoteRegex, $request->comment)) {
                 preg_match_all($quoteRegex, $request->comment, $matches);
                 $rawPostIDs = $matches[0];
@@ -48,18 +62,18 @@ class PostController extends Controller
                     $relatedPost = Post::find($postID);
                     $newcontent = "";
                     // Add arrow to quote if CrossThread
-                    if($relatedPost->thread_id != $request->threadId){
-                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID." →</a>", $currentPost->content);
-                    // Add OP to quote if OP    
-                    } else if($relatedPost->OP) {
-                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID." (OP)</a>", $currentPost->content);
+                    if ($relatedPost->thread_id != $request->threadId) {
+                        $newcontent = str_replace($rawPostID, "<a href='#p" . $postID . "' class='quotelink'>" . $rawPostID . " →</a>", $currentPost->content);
+                        // Add OP to quote if OP    
+                    } else if ($relatedPost->OP) {
+                        $newcontent = str_replace($rawPostID, "<a href='#p" . $postID . "' class='quotelink'>" . $rawPostID . " (OP)</a>", $currentPost->content);
                     } else {
-                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID."</a>", $currentPost->content);
+                        $newcontent = str_replace($rawPostID, "<a href='#p" . $postID . "' class='quotelink'>" . $rawPostID . "</a>", $currentPost->content);
                     }
                     $currentPost->content = $newcontent;
                     $currentPost->save();
 
-                    
+
                     // HTML directement dans le plaintext
                     PostPivot::create([
                         "parent_id" => $postID,
