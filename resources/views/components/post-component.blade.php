@@ -71,6 +71,8 @@
             let delay;
             let links = document.querySelectorAll(".backlink, .quotelink");
             let hoveredLink = "";
+
+            // Axios stuff
             let fetchedData;
             let currentPostsInFetchedThread = [];
 
@@ -112,10 +114,7 @@
 
                 link.addEventListener('pointerenter', (e) => {
                     if (childId.includes("→")) {
-
-                        let clone = crossTemplate.content.firstElementChild.cloneNode(true);
                         let childIdTrimmed = childId.substring(0, childId.length - 2);
-                        clone.querySelector('.id').innerText = childIdTrimmed
                         if (!fetchedData || fetchedData && (!currentPostsInFetchedThread.includes(
                                 parseInt(childIdTrimmed)))) {
                             axios.get(`{!! '/api/' . $post->getBoardName() . '/${childIdTrimmed}' !!}`)
@@ -124,56 +123,14 @@
                                     currentPostsInFetchedThread = fetchedData.map(entry => entry.id)
                                 })
                                 .then(res => {
-                                    let quote = fetchedData.filter(entry => {
-                                        return entry.id == childIdTrimmed
-                                    })[0];
-                                    clone.querySelector('.title').innerText = quote.title
-                                    clone.querySelector('.author').innerText = quote.author
-                                    clone.querySelector('.created-at').innerText = quote.created_at
-                                    clone.querySelector('.post-content').innerHTML = quote.content
-
-                                    hoveredLink = e.target
-                                    let coordinates = {
-                                        x: hoveredLink.offsetLeft,
-                                        y: hoveredLink.offsetTop,
-                                    }
-
-                                    let quotePreview = document.createElement("div");
-                                    quotePreview.id = "quote-preview";
-                                    quotePreview.appendChild(clone);
-                                    document.querySelector("body").appendChild(quotePreview);
-                                    quotePreview.style.left =
-                                        `${coordinates.x + hoveredLink.offsetWidth + 5}px`
-                                    quotePreview.style.top =
-                                        `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
+                                    fillAndAppendTemplate(fetchedData, childIdTrimmed, e.target)
                                 })
-                                .catch(err => {
-                                    console.log(err);
-                                })
-
+                            .catch(err => {
+                                console.log(err);
+                            })
                         } else {
-                            let quote = fetchedData.filter(entry => entry.id == childIdTrimmed)[0];
-                            clone.querySelector('.title').innerText = quote.title
-                            clone.querySelector('.author').innerText = quote.author
-                            clone.querySelector('.created-at').innerText = quote.created_at
-                            clone.querySelector('.post-content').innerHTML = quote.content
-
-                            hoveredLink = e.target
-                            let coordinates = {
-                                x: hoveredLink.offsetLeft,
-                                y: hoveredLink.offsetTop,
-                            }
-
-                            let quotePreview = document.createElement("div");
-                            quotePreview.id = "quote-preview";
-                            quotePreview.appendChild(clone);
-                            document.querySelector("body").appendChild(quotePreview);
-                            quotePreview.style.left =
-                                `${coordinates.x + hoveredLink.offsetWidth + 5}px`
-                            quotePreview.style.top =
-                                `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
+                            fillAndAppendTemplate(fetchedData, childIdTrimmed, e.target)
                         }
-
                     } else {
                         childElem = document.getElementById(`p${childId}`).querySelector('.reply')
                         hoveredLink = e.target
@@ -181,33 +138,51 @@
                     }
                 })
 
-                link.addEventListener('pointerleave', () => {
+                function fillAndAppendTemplate(data, id, hoveredLink) {
+                    let clone = crossTemplate.content.firstElementChild.cloneNode(true);
+                    let quote = data.filter(entry => entry.id == id)[0];
+                    clone.querySelector('.id').innerText = id
+                    clone.querySelector('.title').innerText = quote.title
+                    clone.querySelector('.author').innerText = quote.author
+                    clone.querySelector('.created-at').innerText = quote.created_at
+                    clone.querySelector('.post-content').innerHTML = quote.content
 
+                    let coordinates = {
+                        x: hoveredLink.offsetLeft,
+                        y: hoveredLink.offsetTop,
+                    }
+
+                    let quotePreview = document.createElement("div");
+                    quotePreview.id = "quote-preview";
+                    quotePreview.appendChild(clone);
+                    document.querySelector("body").appendChild(quotePreview);
+                    quotePreview.style.left =
+                        `${coordinates.x + hoveredLink.offsetWidth + 5}px`
+                    quotePreview.style.top =
+                        `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
+                }
+
+                link.addEventListener('pointerleave', () => {
                     if (document.getElementById("quote-preview")) {
                         document.getElementById("quote-preview").remove();
                     }
-
                     observer.disconnect()
                     hoveredLink = ""
                     highlighted = document.querySelectorAll('.highlight');
                     highlighted.forEach(element => {
                         element.classList.remove('highlight')
                     })
-                    isMouseOverLink = false
-
                 })
             });
 
             let pointerLeaveEvent = new Event('pointerleave')
             document.onscroll = () => {
-                if (document.getElementById('quote-preview')) {
-                    clearTimeout(delay)
-                    delay = setTimeout(() => {
-                        links.forEach(link => {
-                            link.dispatchEvent(pointerLeaveEvent)
-                        })
-                    }, 500);
-                }
+                clearTimeout(delay)
+                delay = setTimeout(() => {
+                    links.forEach(link => {
+                        link.dispatchEvent(pointerLeaveEvent)
+                    })
+                }, 500);
             };
         }
     </script>
