@@ -50,13 +50,11 @@ class PostController extends Controller
                     // Add arrow to quote if CrossThread
                     if($relatedPost->thread_id != $request->threadId){
                         $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID." →</a>", $currentPost->content);
+                    // Add OP to quote if OP    
+                    } else if($relatedPost->OP) {
+                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID." (OP)</a>", $currentPost->content);
                     } else {
                         $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID."</a>", $currentPost->content);
-                    }
-
-                    // Add (OP) to quote if OP
-                    if($relatedPost->OP){
-                        $newcontent = str_replace($rawPostID, "<a href='#p".$postID."' class='quotelink'>".$rawPostID." (OP)</a>", $currentPost->content);
                     }
                     $currentPost->content = $newcontent;
                     $currentPost->save();

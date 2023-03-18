@@ -75,6 +75,7 @@
             // Axios stuff
             let fetchedData;
             let currentPostsInFetchedThread = [];
+            const trimRegex = /\d+/g
 
             let options = {
                 root: null, // for checking relative to viewport
@@ -109,7 +110,6 @@
             let observer = new IntersectionObserver(callback, options);
 
             links.forEach(link => {
-                const trimRegex = /\d+/g
                 let rawChildId = link.innerText;
                 let childId = link.innerText.match(trimRegex)[0];
                 let childElem;
