@@ -96,14 +96,14 @@ class PostSeeder extends Seeder
                 "content" => "<a href='#p5' class='quotelink'>>>5</a><br><a href='#p5' class='quotelink'>>>11</a><br>This mf gets it, imagine wakin up to this anon. You're fucked no matter what, you better GTFO of here while you still can",
             ],
             [
-                "thread_id" => 7,
+                "thread_id" => 20,
                 "title" => "Hello",
                 "author" => "NameFagging",
                 "content" => "I paid for 6Chan gold",
                 "OP" => true
             ],
             [
-                "thread_id" => 7,
+                "thread_id" => 20,
                 "content" => "Imagine namefagging in 2023",
             ],
         ];
