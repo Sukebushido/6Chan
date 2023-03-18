@@ -32,30 +32,30 @@
         </div>
     </div>
     <template id="cross-template">
-        
-            <div class="reply">
-                <div class="title-container">
-                    <span class="title"></span>
-                    <span class="author"></span>
-                    <span class="created-at"></span>
-                    <span>
-                        <a href="#" class="link" title="Link to this post">No.</a>
-                        <a href="#" class="id" title="Reply to this post"></a>
-                    </span>
-                    <i class="fa-solid fa-caret-right"></i>
-                    <span class="backlink-container">
-                        @foreach ($post->trueChildren as $child)
-                            <span class="backlink">>>{{ $child->id ?? '' }}</span>
-                        @endforeach
-                    </span>
-                </div>
-                <div class="content-container">
-                    <p class="post-content"></p>
-                </div>
-                <div class="test">
-                </div>
+
+        <div class="reply">
+            <div class="title-container">
+                <span class="title"></span>
+                <span class="author"></span>
+                <span class="created-at"></span>
+                <span>
+                    <a href="#" class="link" title="Link to this post">No.</a>
+                    <a href="#" class="id" title="Reply to this post"></a>
+                </span>
+                <i class="fa-solid fa-caret-right"></i>
+                <span class="backlink-container">
+                    @foreach ($post->trueChildren as $child)
+                        <span class="backlink">>>{{ $child->id ?? '' }}</span>
+                    @endforeach
+                </span>
             </div>
-        
+            <div class="content-container">
+                <p class="post-content"></p>
+            </div>
+            <div class="test">
+            </div>
+        </div>
+
     </template>
 </div>
 @pushOnce('scripts')
@@ -112,12 +112,12 @@
 
                 link.addEventListener('pointerenter', (e) => {
                     if (childId.includes("→")) {
+                        
                         let clone = crossTemplate.content.firstElementChild.cloneNode(true);
                         let childIdTrimmed = childId.substring(0, childId.length - 2);
                         clone.querySelector('.id').innerText = childIdTrimmed
                         if (!fetchedData || fetchedData && (!currentPostsInFetchedThread.includes(
                                 parseInt(childIdTrimmed)))) {
-                            console.log('API call');
                             axios.get(`{!! '/api/' . $post->getBoardName() . '/${childIdTrimmed}' !!}`)
                                 .then(res => {
                                     fetchedData = (res.data);
@@ -163,7 +163,6 @@
                             quotePreview.appendChild(clone);
                             document.querySelector("body").appendChild(quotePreview);
                         }
-                        // Check if threadID est différente, et si c'est le cas nécessité de renvoyer une requête
 
                     } else {
                         childElem = document.getElementById(`p${childId}`).querySelector('.reply')
@@ -173,24 +172,19 @@
                 })
 
                 link.addEventListener('pointerleave', () => {
-                    console.log(childId);
 
-                    if (childId.includes("→")) {
-                        if (document.getElementById("quote-preview")) {
-                            document.getElementById("quote-preview").remove();
-                        }
-                    } else {
-                        observer.unobserve(childElem)
-                        hoveredLink = ""
-                        if (document.getElementById("quote-preview")) {
-                            document.getElementById("quote-preview").remove();
-                        }
-                        highlighted = document.querySelectorAll('.highlight');
-                        highlighted.forEach(element => {
-                            element.classList.remove('highlight')
-                        })
-                        isMouseOverLink = false
+                    if (document.getElementById("quote-preview")) {
+                        document.getElementById("quote-preview").remove();
                     }
+
+                    observer.disconnect()
+                    hoveredLink = ""
+                    highlighted = document.querySelectorAll('.highlight');
+                    highlighted.forEach(element => {
+                        element.classList.remove('highlight')
+                    })
+                    isMouseOverLink = false
+
                 })
             });
 
