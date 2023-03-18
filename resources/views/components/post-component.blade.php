@@ -112,7 +112,7 @@
 
                 link.addEventListener('pointerenter', (e) => {
                     if (childId.includes("→")) {
-                        
+
                         let clone = crossTemplate.content.firstElementChild.cloneNode(true);
                         let childIdTrimmed = childId.substring(0, childId.length - 2);
                         clone.querySelector('.id').innerText = childIdTrimmed
@@ -158,10 +158,20 @@
                             clone.querySelector('.created-at').innerText = quote.created_at
                             clone.querySelector('.post-content').innerHTML = quote.content
 
+                            hoveredLink = e.target
+                            let coordinates = {
+                                x: hoveredLink.offsetLeft,
+                                y: hoveredLink.offsetTop,
+                            }
+
                             let quotePreview = document.createElement("div");
                             quotePreview.id = "quote-preview";
                             quotePreview.appendChild(clone);
                             document.querySelector("body").appendChild(quotePreview);
+                            quotePreview.style.left =
+                                `${coordinates.x + hoveredLink.offsetWidth + 5}px`
+                            quotePreview.style.top =
+                                `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
                         }
 
                     } else {
