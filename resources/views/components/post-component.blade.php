@@ -1,6 +1,6 @@
 <div class="post container" id="p{{ $post->id }}">
     {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
-    <div class="{{ $post->id == $post->thread_id ? 'main' : 'reply' }}">
+    <div class="{{ $post->OP ? 'main' : 'reply' }} inner-post">
         <div class="title-container">
             <span class="title">{{ $post->title }}</span>
             <span class="author">{{ $post->author }}</span>
@@ -20,89 +20,168 @@
                 : '' !!}
             <i class="fa-solid fa-caret-right"></i>
             <span class="backlink-container">
-                @foreach ($post->children as $child)
+                @foreach ($post->trueChildren as $child)
                     <span class="backlink">>>{{ $child->id ?? '' }}</span>
                 @endforeach
             </span>
         </div>
         <div class="content-container">
-            <p class="content">{!! $post->content !!}</p>
+            <p class="post-content">{!! nl2br($post->content) !!}</p>
         </div>
         <div class="test">
         </div>
     </div>
-</div>
+    <template id="cross-template">
 
+        <div class="reply">
+            <div class="title-container">
+                <span class="title"></span>
+                <span class="author"></span>
+                <span class="created-at"></span>
+                <span>
+                    <a href="#" class="link" title="Link to this post">No.</a>
+                    <a href="#" class="id" title="Reply to this post"></a>
+                </span>
+                <i class="fa-solid fa-caret-right"></i>
+            </div>
+            <div class="content-container">
+                <p class="post-content"></p>
+            </div>
+            <div class="test">
+            </div>
+        </div>
+
+    </template>
+</div>
 @pushOnce('scripts')
     <script>
-        let delay;
-        let links = document.querySelectorAll(".backlink, .quotelink");
-        let hoveredLink = "";
+        window.onload = () => {
+            const crossTemplate = document.getElementById('cross-template');
+            let allOfTemplates = document.querySelectorAll('#cross-template');
+            allOfTemplates.forEach(template => {
+                template.remove()
+            });
 
-        let options = {
-            root: null, // for checking relative to viewport
-            rootmargin: "0px",
-            threshold: 1.0 // callback called when 100% of object is on screen
-        };
+            // Links logic
+            let delay;
+            let links = document.querySelectorAll(".backlink, .quotelink");
+            let hoveredLink = "";
 
-        let callback = (entries, observer) => {
-            entries.forEach((entry) => {
-                let target = entry.target
-                if (entry.isIntersecting) {
-                    target.classList.add('highlight')
-                } else if (!document.getElementById('quote-preview')) {
+            // Axios stuff
+            let fetchedData;
+            let currentPostsInFetchedThread = [];
+            const trimRegex = /\d+/g
+
+            let options = {
+                root: null, // for checking relative to viewport
+                rootmargin: "0px",
+                threshold: 1.0 // callback called when 100% of object is on screen
+            };
+
+            let callback = (entries, observer) => {
+                entries.forEach((entry) => {
+                    let target = entry.target
+                    if (entry.isIntersecting) {
+                        target.classList.add('highlight')
+                    } else if (!document.getElementById('quote-preview')) {
+                        let coordinates = {
+                            x: hoveredLink.offsetLeft,
+                            y: hoveredLink.offsetTop,
+                        }
+                        let clone = target.cloneNode(true);
+                        clone.id = "quote";
+                        let quotePreview = document.createElement("div");
+                        quotePreview.id = "quote-preview";
+                        quotePreview.appendChild(clone);
+                        document.querySelector("body").appendChild(quotePreview);
+                        quotePreview.style.left =
+                            `${coordinates.x + hoveredLink.offsetWidth + 5}px`
+                        quotePreview.style.top =
+                            `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
+                    }
+                });
+            }
+
+            let observer = new IntersectionObserver(callback, options);
+
+            links.forEach(link => {
+                let rawChildId = link.innerText;
+                let childId = link.innerText.match(trimRegex)[0];
+                let childElem;
+
+                link.addEventListener('pointerenter', (e) => {
+                    if (rawChildId.includes("→")) {
+                        if (!fetchedData || fetchedData && (!currentPostsInFetchedThread.includes(
+                                parseInt(childId)))) {
+                            axios.get(`{!! '/api/' . $post->getBoardName() . '/${childId}' !!}`)
+                                .then(res => {
+                                    fetchedData = (res.data);
+                                    currentPostsInFetchedThread = fetchedData.map(entry => entry.id)
+                                })
+                                .then(res => {
+                                    fillAndAppendTemplate(fetchedData, childId, e.target)
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                })
+                        } else {
+                            fillAndAppendTemplate(fetchedData, childId, e.target)
+                        }
+                    } else {
+                        childElem = document.getElementById(`p${childId}`).querySelector('.inner-post')
+                        hoveredLink = e.target
+                        observer.observe(childElem);
+                    }
+                })
+
+                function fillAndAppendTemplate(data, childID, hoveredLink) {
+                    let clone = crossTemplate.content.firstElementChild.cloneNode(true);
+                    let quote = data.filter(entry => entry.id == childID)[0];
+                    clone.querySelector('.id').innerText = childID
+                    clone.querySelector('.title').innerText = quote.title
+                    clone.querySelector('.author').innerText = quote.author
+                    // Necessary for formatting
+                    clone.querySelector('.created-at').innerText = quote.created_at.replace("T", " ").substring(0, quote.created_at.length - 8)
+                    clone.querySelector('.post-content').innerHTML = quote.content
+
                     let coordinates = {
                         x: hoveredLink.offsetLeft,
                         y: hoveredLink.offsetTop,
                     }
-                    let clone = target.cloneNode(true);
-                    clone.id = "quote";
+
                     let quotePreview = document.createElement("div");
                     quotePreview.id = "quote-preview";
                     quotePreview.appendChild(clone);
                     document.querySelector("body").appendChild(quotePreview);
+
                     quotePreview.style.left =
                         `${coordinates.x + hoveredLink.offsetWidth + 5}px`
                     quotePreview.style.top =
                         `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
                 }
+
+                link.addEventListener('pointerleave', () => {
+                    if (document.getElementById("quote-preview")) {
+                        document.getElementById("quote-preview").remove();
+                    }
+                    observer.disconnect()
+                    hoveredLink = ""
+                    highlighted = document.querySelectorAll('.highlight');
+                    highlighted.forEach(element => {
+                        element.classList.remove('highlight')
+                    })
+                })
             });
+
+            let pointerLeaveEvent = new Event('pointerleave')
+            document.onscroll = () => {
+                clearTimeout(delay)
+                delay = setTimeout(() => {
+                    links.forEach(link => {
+                        link.dispatchEvent(pointerLeaveEvent)
+                    })
+                }, 500);
+            };
         }
-
-
-        let observer = new IntersectionObserver(callback, options);
-
-        links.forEach(link => {
-            let childId = link.innerText.substring(2)
-            let childElem = document.getElementById(`p${childId}`).querySelector('.reply')
-
-            link.addEventListener('pointerenter', (e) => {
-                hoveredLink = e.target
-                observer.observe(childElem);
-            })
-
-            link.addEventListener('pointerleave', () => {
-                observer.unobserve(childElem)
-                hoveredLink = ""
-                if (document.getElementById("quote-preview")) {
-                    document.getElementById("quote-preview").remove();
-                }
-                highlighted = document.querySelectorAll('.highlight');
-                highlighted.forEach(element => {
-                    element.classList.remove('highlight')
-                })
-                isMouseOverLink = false
-            })
-        });
-
-        let pointerLeaveEvent = new Event('pointerleave')
-        document.onscroll = () => {
-            clearTimeout(delay)
-            delay = setTimeout(() => {
-                links.forEach(link => {
-                    link.dispatchEvent(pointerLeaveEvent)
-                })
-            }, 500);
-        };
     </script>
 @endPushOnce()

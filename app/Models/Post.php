@@ -13,9 +13,10 @@ class Post extends Model
     protected $fillable = [
         "title",
         "author",
-        // img,
+        "img",
         "OP",
-        "content"
+        "content",
+        "thread_id"
     ];
 
     // protected function getAllPostsByThread(int $threadId){
@@ -61,6 +62,12 @@ class Post extends Model
 
     public function children(): BelongsToMany{
         return $this->belongsToMany(Post::class, "post_pivot", "parent_id", "child_id");
+    }
+
+    // Evite de récupérer les quotes d'une autre thread / board
+    
+    public function trueChildren(){
+        return $this->children()->where(["thread_id"=>$this->getThreadId()]);
     }
 
 }

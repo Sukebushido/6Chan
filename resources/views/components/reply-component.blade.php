@@ -61,7 +61,8 @@
                     const errorMessage = quickReply.querySelector('#errorMessage');
                     quickReply.querySelector('#template_thread_id').innerHTML = threadId
                     threadIdInput.value = threadId
-                    quickReply.querySelector('#comment').value = ">>" + link.innerHTML
+                    quickReply.querySelector('#comment').value = ">>" + link.innerHTML + "\n"
+
                     quickReply.querySelector('#closeCross').addEventListener('click', () => {
                         finalPosX = quickReply.style.left;
                         finalPosY = quickReply.style.top;
@@ -79,32 +80,41 @@
                                     "file": imageInput.value
                                 })
                             .then(function(response) {
+                                /* Refresh page */
                                 errorMessage.innerText = "";
                                 errorMessage.classList.add('hidden')
+                                // window.location.reload();
                             }).catch(error => {
                                 errorMessage.innerText = "";
-                                // stuff to do here
-                                let errors = error.response.data.errors;
-                                if (errors == null) {
-                                    errorMessage.innerText = error.message
-                                } else {
-                                    let errors2 = Object.values(errors);
-                                    for (let error of Object.values(errors)) {
-                                        errorMessage.innerText += `${error[0]}\n`;
-                                    }
+                                if (error.response.data.message.includes(
+                                        'SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails'
+                                    )) {
+                                    errorMessage.innerText =
+                                        "Problem in writing in database, maybe your quotations are messed up";
                                     errorMessage.classList.remove('hidden')
+                                } else {
+                                    let errors = error.response.data.errors;
+                                    if (errors == null) {
+                                        errorMessage.innerText = error.message
+                                    } else {
+                                        let errors2 = Object.values(errors);
+                                        for (let error of Object.values(errors)) {
+                                            errorMessage.innerText += `${error[0]}\n`;
+                                        }
+                                        errorMessage.classList.remove('hidden')
+                                    }
                                 }
-
                             })
                     })
                     if (finalPosX !== 0 && finalPosY !== 0) {
                         quickReply.style.top = finalPosY;
                         quickReply.style.left = finalPosX;
                     } else {
-                        quickReply.style.top = (link.offsetTop - 20) + "px";
-                        quickReply.style.left = (link.offsetLeft + 20) + "px";
+                        quickReply.style.top = "150px";
+                        quickReply.style.left = "300px";
                     }
                     document.querySelector('.placeholder').appendChild(quickReply);
+                    quickReply.querySelector('#comment').focus();
                     dragElement(quickReply);
                 } else {
                     const quickReply = document.getElementById('quickReplyBox')
@@ -116,9 +126,11 @@
                     if (prevThread != threadId) {
                         threadIdInput.value = threadId
                         quickReply.querySelector('#template_thread_id').innerHTML = threadId
-                        comment.value = ">>" + link.innerHTML;
+                        comment.value = ">>" + link.innerHTML + "\n";
+                        quickReply.querySelector('#comment').focus();
                     } else {
-                        comment.value = prevCommentValue + "\n" + ">>" + link.innerHTML
+                        comment.value = prevCommentValue + ">>" + link.innerHTML + "\n"
+                        quickReply.querySelector('#comment').focus();
                     }
                 }
             })
@@ -134,13 +146,12 @@
             }
 
             function dragMouseDown(e) {
-                // e = e || window.event;
                 e.preventDefault();
                 // get position at startup
                 pos3 = e.clientX;
                 pos4 = e.clientY;
                 document.onmouseup = closeDragElement;
-                // call fun when cursor moves
+                // call function when cursor moves
                 document.onmousemove = elementDrag;
             }
 
