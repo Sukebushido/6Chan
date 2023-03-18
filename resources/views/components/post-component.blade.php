@@ -32,7 +32,7 @@
         </div>
     </div>
     <template id="cross-template">
-        <div class="post container" id="p">
+        
             <div class="reply">
                 <div class="title-container">
                     <span class="title"></span>
@@ -55,7 +55,7 @@
                 <div class="test">
                 </div>
             </div>
-        </div>
+        
     </template>
 </div>
 @pushOnce('scripts')
@@ -67,17 +67,12 @@
                 template.remove()
             });
 
-            // Backlinks logic
-            let contents = document.querySelectorAll('.post-content');
-            let quoteRegex = /(>{2}[0-9]+)\b/g;
-            let quoteRegexWithArrow = /^>>\d+(\s→)?$/gm;
-
             // Links logic
             let delay;
             let links = document.querySelectorAll(".backlink, .quotelink");
             let hoveredLink = "";
             let fetchedData;
-            let fetchedDataCurrentThread;
+            let currentPostsInFetchedThread = [];
 
             let options = {
                 root: null, // for checking relative to viewport
@@ -109,7 +104,6 @@
                 });
             }
 
-
             let observer = new IntersectionObserver(callback, options);
 
             links.forEach(link => {
@@ -121,37 +115,48 @@
                         let clone = crossTemplate.content.firstElementChild.cloneNode(true);
                         let childIdTrimmed = childId.substring(0, childId.length - 2);
                         clone.querySelector('.id').innerText = childIdTrimmed
-                        if (!fetchedData) {
+                        if (!fetchedData || fetchedData && (!currentPostsInFetchedThread.includes(
+                                parseInt(childIdTrimmed)))) {
+                            console.log('API call');
                             axios.get(`{!! '/api/' . $post->getBoardName() . '/${childIdTrimmed}' !!}`)
                                 .then(res => {
                                     fetchedData = (res.data);
-                                    fetchedDataCurrentThread = fetchedData.filter(entry => entry.thread_id == 1)[0]
+                                    currentPostsInFetchedThread = fetchedData.map(entry => entry.id)
                                 })
                                 .then(res => {
                                     let quote = fetchedData.filter(entry => {
-                                        console.log(entry.id);
                                         return entry.id == childIdTrimmed
                                     })[0];
-                                    console.log({"quote" : quote});
                                     clone.querySelector('.title').innerText = quote.title
                                     clone.querySelector('.author').innerText = quote.author
                                     clone.querySelector('.created-at').innerText = quote.created_at
-                                    clone.querySelector('.post-content').innerText = quote.content
+                                    clone.querySelector('.post-content').innerHTML = quote.content
+
+                                    hoveredLink = e.target
+                                    let coordinates = {
+                                        x: hoveredLink.offsetLeft,
+                                        y: hoveredLink.offsetTop,
+                                    }
 
                                     let quotePreview = document.createElement("div");
                                     quotePreview.id = "quote-preview";
                                     quotePreview.appendChild(clone);
                                     document.querySelector("body").appendChild(quotePreview);
+                                    quotePreview.style.left =
+                                        `${coordinates.x + hoveredLink.offsetWidth + 5}px`
+                                    quotePreview.style.top =
+                                        `${coordinates.y - (quotePreview.offsetHeight / 2 - hoveredLink.offsetHeight / 2)}px`
                                 })
                                 .catch(err => {
                                     console.log(err);
                                 })
+
                         } else {
-                            let quote = fetchedData.filter(entry => entry.id == 1)[0];
+                            let quote = fetchedData.filter(entry => entry.id == childIdTrimmed)[0];
                             clone.querySelector('.title').innerText = quote.title
                             clone.querySelector('.author').innerText = quote.author
                             clone.querySelector('.created-at').innerText = quote.created_at
-                            clone.querySelector('.post-content').innerText = quote.content
+                            clone.querySelector('.post-content').innerHTML = quote.content
 
                             let quotePreview = document.createElement("div");
                             quotePreview.id = "quote-preview";
@@ -191,12 +196,14 @@
 
             let pointerLeaveEvent = new Event('pointerleave')
             document.onscroll = () => {
-                clearTimeout(delay)
-                delay = setTimeout(() => {
-                    links.forEach(link => {
-                        link.dispatchEvent(pointerLeaveEvent)
-                    })
-                }, 500);
+                if (document.getElementById('quote-preview')) {
+                    clearTimeout(delay)
+                    delay = setTimeout(() => {
+                        links.forEach(link => {
+                            link.dispatchEvent(pointerLeaveEvent)
+                        })
+                    }, 500);
+                }
             };
         }
     </script>
