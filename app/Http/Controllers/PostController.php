@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Post;
 use App\Models\PostPivot;
 use App\Models\Thread;
@@ -16,14 +17,12 @@ class PostController extends Controller
     {
         $request->validate([
             "threadId" => Rule::exists('threads', 'id'),
-            "name" => 'nullable',
-            "options" => 'nullable',
             "comment" => 'required',
-            "captcha" => 'nullable',
-            "file" => 'nullable'
+            "image" => 'image|mimes:jpg,png,jpeg,gif,svg'
         ], [
             "comment.required" => "You must at least post a comment with your reply",
-            "threadId" => "Wrong thread Id"
+            "threadId" => "Wrong thread Id",
+            "image.mimes" => "Wrong image format"
         ]);
 
         DB::beginTransaction();
@@ -32,8 +31,11 @@ class PostController extends Controller
                 "title" => $request->name,
                 "content" => $request->comment,
                 "author" => "Anonymous",
-                "thread_id" => $request->threadId
+                "thread_id" => $request->threadId,
+                "image" => $request->file('image')->store($request->threadId, 'public')
             ]);
+
+
 
             $quoteRegex = "/(>{2}[0-9]+)\b/";
             $greentextRegex = "/^>[^>\n]+$/m";
@@ -43,8 +45,8 @@ class PostController extends Controller
                 preg_match_all($greentextRegex, $request->comment, $matches);
                 $greentextLines = $matches[0];
 
-                foreach($greentextLines as $greentextLine){
-                    $newcontent = str_replace($greentextLine, "<span class='greentext'>".$greentextLine."</span>", $currentPost->content);
+                foreach ($greentextLines as $greentextLine) {
+                    $newcontent = str_replace($greentextLine, "<span class='greentext'>" . $greentextLine . "</span>", $currentPost->content);
                     $currentPost->content = $newcontent;
                     $currentPost->save();
                 }

@@ -25,14 +25,19 @@
                 @endforeach
             </span>
         </div>
+        <div class="img-container">
+            @if ($post->image)
+                <img src="{{ Storage::url($post->image) }}" alt="image">
+            @endif
+        </div>
         <div class="content-container">
             <p class="post-content">{!! nl2br($post->content) !!}</p>
         </div>
         <div class="test">
         </div>
     </div>
-    <template id="cross-template">
 
+    <template id="cross-template">
         <div class="reply">
             <div class="title-container">
                 <span class="title"></span>
@@ -50,7 +55,6 @@
             <div class="test">
             </div>
         </div>
-
     </template>
 </div>
 @pushOnce('scripts')
@@ -141,7 +145,8 @@
                     clone.querySelector('.title').innerText = quote.title
                     clone.querySelector('.author').innerText = quote.author
                     // Necessary for formatting
-                    clone.querySelector('.created-at').innerText = quote.created_at.replace("T", " ").substring(0, quote.created_at.length - 8)
+                    clone.querySelector('.created-at').innerText = quote.created_at.replace("T", " ").substring(
+                        0, quote.created_at.length - 8)
                     clone.querySelector('.post-content').innerHTML = quote.content
 
                     let coordinates = {
