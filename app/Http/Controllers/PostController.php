@@ -28,21 +28,14 @@ class PostController extends Controller
 
         DB::beginTransaction();
         try {
-
-            if($request->file('image')){
-                $imagePath = $request->file('image')->storeAs($request->threadId, uniqid() . "." . $request->file('image')->extension(), 'public');
-                $image = Image::create([
-                    'image' => $imagePath,
-                    'name' => basename($imagePath)
-                ]);
-            }
+            $image = $request->file('image') ? $request->file('image')->storeAs($request->threadId, uniqid() . "." . $request->file('image')->extension(), 'public') : NULL;
 
             $currentPost = Post::create([
                 "title" => $request->name,
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId,
-                "image_id" => $image->id ?? NULL
+                "image" => $image
             ]);
 
 

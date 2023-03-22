@@ -26,16 +26,20 @@
                 @endforeach
             </span>
         </div>
-        @if ($image)
+        @if ($post->image)
             <div class="img-metadata-container">
+                @php
+                    [$width, $height] = getimagesize(Storage::disk('public')->path($post->image));
+                @endphp
                 <p>File :
-                    <a href={{ Storage::url($image->image) }}>{{ $image->name }}</a> (
-                    <span class="space">Space</span>,
-                    <span class="size">Size Here </span>)
+                    <a href={{ Storage::url($post->image) }} target="_blank" rel="noopener noreferrer">
+                        {{ basename(Storage::disk('public')->url($post->image)) }} </a>(<span
+                        class="space">{{ round(Storage::disk('public')->size($post->image) / 1000) }} KB</span>,
+                    <span class="size">{{ $width }}x{{ $height }}</span>)
                 </p>
             </div>
             <div class="img-container">
-                <img src="{{ Storage::url($image->image) }}" alt="image">
+                <img src="{{ Storage::url($post->image) }}" alt="image">
             </div>
         @endif
         <div class="content-container">

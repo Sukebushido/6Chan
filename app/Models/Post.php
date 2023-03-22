@@ -16,13 +16,8 @@ class Post extends Model
         "OP",
         "content",
         "thread_id",
-        "image_id"
+        "image"
     ];
-
-    // protected function getAllPostsByThread(int $threadId){
-    //     $posts = Post::where(["thread_id" => $threadId]);
-    //     return $posts;
-    // }
 
     public function getThread()
     {
