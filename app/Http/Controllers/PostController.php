@@ -18,7 +18,7 @@ class PostController extends Controller
         $request->validate([
             "threadId" => Rule::exists('threads', 'id'),
             "comment" => 'required',
-            "image" => 'image|mimes:jpg,png,jpeg,gif,svg'
+            "image" => 'nullable|image|mimes:jpg,png,jpeg,gif,svg'
         ], [
             "comment.required" => "You must at least post a comment with your reply",
             "threadId" => "Wrong thread Id",
@@ -32,7 +32,7 @@ class PostController extends Controller
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId,
-                "image" => $request->file('image')->store($request->threadId, 'public')
+                "image" => $request->file('image') ? $request->file('image')->store($request->threadId, 'public') : ""
             ]);
 
 
