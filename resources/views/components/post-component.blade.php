@@ -1,4 +1,5 @@
 <div class="post container" id="p{{ $post->id }}">
+
     {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
     <div class="{{ $post->OP ? 'main' : 'reply' }} inner-post">
         <div class="title-container">
@@ -25,11 +26,18 @@
                 @endforeach
             </span>
         </div>
-        <div class="img-container">
-            @if ($post->image)
-                <img src="{{ Storage::url($post->image) }}" alt="image">
-            @endif
-        </div>
+        @if ($image)
+            <div class="img-metadata-container">
+                <p>File :
+                    <a href={{ Storage::url($image->image) }}>{{ $image->name }}</a> (
+                    <span class="space">Space</span>,
+                    <span class="size">Size Here </span>)
+                </p>
+            </div>
+            <div class="img-container">
+                <img src="{{ Storage::url($image->image) }}" alt="image">
+            </div>
+        @endif
         <div class="content-container">
             <p class="post-content">{!! nl2br($post->content) !!}</p>
         </div>

@@ -16,7 +16,7 @@ class Post extends Model
         "OP",
         "content",
         "thread_id",
-        "image"
+        "image_id"
     ];
 
     // protected function getAllPostsByThread(int $threadId){
