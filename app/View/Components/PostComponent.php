@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Image;
 use Closure;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
@@ -23,6 +24,7 @@ class PostComponent extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.post-component');
+        $image = Image::find($this->post->image_id);
+        return view('components.post-component', ['image' => $image]);
     }
 }

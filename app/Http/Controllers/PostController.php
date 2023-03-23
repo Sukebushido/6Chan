@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Thread;
+use App\Models\Image;
 use App\Models\PostPivot;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Intervention\Image\Facades\Image as IntervImage;
 
 class PostController extends Controller
 {
@@ -29,18 +30,32 @@ class PostController extends Controller
 
         DB::beginTransaction();
         try {
-            $image = $request->file('image') ? $request->file('image')->storeAs($request->threadId, $request->file('image')->getClientOriginalName(), 'public') : NULL;
+            $newImage = NULL;
+
+            if ($request->file('image')) {
+                $file = $request->file('image');
+                $image = $file->store($request->threadId, 'public');
+                $small_image = IntervImage::make($file)->resize(250, 250, function ($constraints) {
+                    $constraints->aspectRatio();
+                    $constraints->upsize();
+                })->encode('jpg', 100);
+                Storage::disk('public')->put($request->threadId . "/" . pathinfo($image, PATHINFO_FILENAME) . "s.jpg", $small_image);
+
+                $newImage = Image::create([
+                    'name' => $request->file('image')->getClientOriginalName(),
+                    'image' => $image,
+                    'image_small' => $request->threadId . "/" . pathinfo($image, PATHINFO_FILENAME) . "s.jpg"
+                ]);
+            }
+
 
             $currentPost = Post::create([
                 "title" => $request->name,
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId,
-                "image" => $image,
-                "image_small" => NULL
+                "image_id" => $newImage ? $newImage->id : NULL
             ]);
-
-
 
             $quoteRegex = "/(>{2}[0-9]+)\b/";
             $greentextRegex = "/^>[^>\n]+$/m";
