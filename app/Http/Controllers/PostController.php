@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\Image;
 use App\Models\Thread;
 use App\Models\PostPivot;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 
@@ -28,14 +29,15 @@ class PostController extends Controller
 
         DB::beginTransaction();
         try {
-            $image = $request->file('image') ? $request->file('image')->storeAs($request->threadId, uniqid() . "." . $request->file('image')->extension(), 'public') : NULL;
+            $image = $request->file('image') ? $request->file('image')->storeAs($request->threadId, $request->file('image')->getClientOriginalName(), 'public') : NULL;
 
             $currentPost = Post::create([
                 "title" => $request->name,
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId,
-                "image" => $image
+                "image" => $image,
+                "image_small" => NULL
             ]);
 
 

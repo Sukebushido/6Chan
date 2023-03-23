@@ -16,7 +16,8 @@ class Post extends Model
         "OP",
         "content",
         "thread_id",
-        "image"
+        "image",
+        "image_small"
     ];
 
     public function getThread()

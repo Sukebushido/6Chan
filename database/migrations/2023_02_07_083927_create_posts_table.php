@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("thread_id")->constrained();
             $table->string("image")->nullable();
+            $table->string("image_small")->nullable();
             $table->string("title")->nullable();
             $table->string("author")->nullable(false)->default("Anonymous");
             $table->boolean("OP")->default(false);

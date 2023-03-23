@@ -39,7 +39,7 @@
                 </p>
             </div>
             <div class="img-container">
-                <img src="{{ Storage::url($post->image) }}" alt="image">
+                <img src="{{ Storage::disk('public')->url($post->image) }}" class="thumbnail" alt="image">
             </div>
         @endif
         <div class="content-container">
