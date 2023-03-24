@@ -32,14 +32,17 @@
                     [$width, $height] = getimagesize(Storage::disk('public')->path($image->image));
                 @endphp
                 <p>File :
-                    <a href={{ Storage::url($image->image) }} target="_blank" rel="noopener noreferrer">
-                        {{ $image->name }} </a>
-                    (<span class="space">{{ round(Storage::disk('public')->size($image->image) / 1000) }} KB</span>,
+                    <a href={{ Storage::url($image->image) }} target="_blank" rel="noopener noreferrer" class="filename">
+                        {{ $image->name }}</a>
+                     (<span class="space">{{ round(Storage::disk('public')->size($image->image) / 1000) }} KB</span>,
                     <span class="size">{{ $width }}x{{ $height }}</span>)
                 </p>
             </div>
             <div class="img-container">
-                <img src="{{ Storage::url($image->image_small) }}" class="thumbnail" alt="image">
+                <a href="{{ Storage::url($image->image) }}" target="_blank" class="fileThumb">
+                    <img src="{{ Storage::url($image->image_small) }}" class="thumbnail"
+                        alt="{{ round(Storage::disk('public')->size($image->image) / 1000) }} KB" loading="lazy">
+                </a>
             </div>
         @endif
         <div class="content-container">
@@ -72,6 +75,9 @@
 @pushOnce('scripts')
     <script>
         window.onload = () => {
+            // Image related stuff
+            let fileThumbs = document.querySelectorAll('.fileThumb');
+
             const crossTemplate = document.getElementById('cross-template');
             let allOfTemplates = document.querySelectorAll('#cross-template');
             allOfTemplates.forEach(template => {
@@ -199,6 +205,34 @@
                     })
                 }, 500);
             };
+
+            fileThumbs.forEach(file => {
+                file.addEventListener('click', (e) => {
+                    e.preventDefault()
+                    let small_img = file.querySelector('img');
+                    if(!file.contains(file.querySelector('.expanded-thumb'))){
+                        let big_img = document.createElement('img');
+                        big_img.src = file.href
+                        big_img.classList.add("expanded-thumb")
+                        small_img.style.display = "none"
+                        file.appendChild(big_img)
+                    } else {
+                        file.removeChild(file.querySelector('.expanded-thumb'))
+                        small_img.style.removeProperty('display');
+                    }
+                }, 'false');
+            });
+
+            // function hideBigThumb(e){
+            //     let big_img = e.currentTarget
+            //     let parent = e.target.parentNode
+            //     let small_img = parent.firstElementChild
+
+            //     console.log(parent);
+
+            //     parent.removeChild(big_img);
+            //     small_img.style.display = "";
+            // }
         }
     </script>
 @endPushOnce()
