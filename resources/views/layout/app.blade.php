@@ -20,6 +20,6 @@
 <body class="antialiased">
     @yield('content')
 </body>
-@stack('scripts')
 
+@stack('scripts')
 </html>

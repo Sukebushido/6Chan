@@ -74,7 +74,7 @@
 </div>
 @pushOnce('scripts')
     <script>
-        window.onload = () => {
+        window.addEventListener("load",function(){
             // Image related stuff
             let fileThumbs = document.querySelectorAll('.fileThumb');
 
@@ -224,17 +224,6 @@
                     }
                 }, 'false');
             });
-
-            // function hideBigThumb(e){
-            //     let big_img = e.currentTarget
-            //     let parent = e.target.parentNode
-            //     let small_img = parent.firstElementChild
-
-            //     console.log(parent);
-
-            //     parent.removeChild(big_img);
-            //     small_img.style.display = "";
-            // }
-        }
+        })
     </script>
 @endPushOnce()

@@ -33,6 +33,8 @@ Route::group(['prefix' => '/{boardName}'], function(){
     Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
     Route::middleware(['throttle:post'])->group(function(){
         Route::post('/imgboard', [PostController::class, 'index'])->name('post');
+        Route::post('/imgboard-post', [PostFormController::class, 'reply'])->name('reply');
+        Route::post('/imgboard-thread', [PostFormController::class, 'newThread'])->name('newThread');
     });
 }); 
 

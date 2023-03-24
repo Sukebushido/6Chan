@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Intervention\Image\Facades\Image as IntervImage;
 
-class PostController extends Controller
+class PostFormController extends Controller
 {
-    public function index(Request $request)
+    public function reply(Request $request)
     {
         $request->validate([
             "threadId" => Rule::exists('threads', 'id'),
@@ -110,5 +110,9 @@ class PostController extends Controller
             DB::rollback();
         }
         return response()->json($request->all());
+    }
+
+    public function newThread(Request $request){
+        
     }
 }
