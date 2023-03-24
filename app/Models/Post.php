@@ -13,16 +13,11 @@ class Post extends Model
     protected $fillable = [
         "title",
         "author",
-        "img",
         "OP",
         "content",
-        "thread_id"
+        "thread_id",
+        "image_id",
     ];
-
-    // protected function getAllPostsByThread(int $threadId){
-    //     $posts = Post::where(["thread_id" => $threadId]);
-    //     return $posts;
-    // }
 
     public function getThread()
     {

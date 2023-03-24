@@ -1,6 +1,7 @@
 <template id="quickReplyTemplate" hidden style="display: none">
     <div class="container" id="quickReplyBox">
-        <form method="post" action="{{ route('post', ['boardName' => $boardName]) }}" id="reply_form" class="reply-box">
+        <form method="post" action="{{ route('post', ['boardName' => $boardName]) }}" id="reply_form" class="reply-box"
+            enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="threadId" id="inputThreadId" value="">
             <div class="header">
@@ -21,8 +22,8 @@
                 </div>
             </div>
             <div class="footer">
-                <input type="file" name="file" id="file">
-                <button type="submit" id="submitButton">Post</button>
+                <input type="file" name="image" id="image">
+                <button type="button" id="submitButton">Post</button>
             </div>
             <div class="errors">
                 <p id="errorMessage" class="error hidden"></p>
@@ -56,7 +57,7 @@
                     const optionsInput = quickReply.querySelector('#options');
                     const commentInput = quickReply.querySelector('#comment');
                     const captchaInput = quickReply.querySelector('#captcha');
-                    const imageInput = quickReply.querySelector('#file');
+                    const imageInput = quickReply.querySelector('#image');
                     const closeCross = quickReply.querySelector('#closeCross')
                     const errorMessage = quickReply.querySelector('#errorMessage');
                     quickReply.querySelector('#template_thread_id').innerHTML = threadId
@@ -70,41 +71,47 @@
                     })
                     quickReply.querySelector('#submitButton').addEventListener('click', (e) => {
                         e.preventDefault();
+                        console.log(imageInput.files[0]);
                         axios.post(
-                                "{{ route('post', ['boardName' => $boardName]) }}", {
-                                    "threadId": threadIdInput.value,
-                                    "name": nameInput.value,
-                                    "options": optionsInput.value,
-                                    "comment": commentInput.value,
-                                    "captcha": captchaInput.value,
-                                    "file": imageInput.value
-                                })
-                            .then(function(response) {
-                                /* Refresh page */
-                                errorMessage.innerText = "";
-                                errorMessage.classList.add('hidden')
-                                // window.location.reload();
-                            }).catch(error => {
-                                errorMessage.innerText = "";
-                                if (error.response.data.message.includes(
-                                        'SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails'
-                                    )) {
-                                    errorMessage.innerText =
-                                        "Problem in writing in database, maybe your quotations are messed up";
-                                    errorMessage.classList.remove('hidden')
-                                } else {
-                                    let errors = error.response.data.errors;
-                                    if (errors == null) {
-                                        errorMessage.innerText = error.message
-                                    } else {
-                                        let errors2 = Object.values(errors);
-                                        for (let error of Object.values(errors)) {
-                                            errorMessage.innerText += `${error[0]}\n`;
-                                        }
-                                        errorMessage.classList.remove('hidden')
-                                    }
+                            "{{ route('post', ['boardName' => $boardName]) }}", {
+                                "threadId": threadIdInput.value,
+                                "name": nameInput.value,
+                                "options": optionsInput.value,
+                                "comment": commentInput.value,
+                                "captcha": captchaInput.value,
+                                "image": imageInput.files[0] ?? ""
+                            }, {
+                                headers: {
+                                    "Content-type" : "multipart/form-data"
                                 }
                             })
+                      
+                        .then(function(response) {
+                            /* Refresh page */
+                            errorMessage.innerText = "";
+                            errorMessage.classList.add('hidden')
+                            // window.location.reload();
+                        }).catch(error => {
+                            errorMessage.innerText = "";
+                            if (error.response.data.message.includes(
+                                    'SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails'
+                                )) {
+                                errorMessage.innerText =
+                                    "Problem in writing in database, maybe your quotations are messed up";
+                                errorMessage.classList.remove('hidden')
+                            } else {
+                                let errors = error.response.data.errors;
+                                if (errors == null) {
+                                    errorMessage.innerText = error.message
+                                } else {
+                                    let errors2 = Object.values(errors);
+                                    for (let error of Object.values(errors)) {
+                                        errorMessage.innerText += `${error[0]}\n`;
+                                    }
+                                    errorMessage.classList.remove('hidden')
+                                }
+                            }
+                        })
                     })
                     if (finalPosX !== 0 && finalPosY !== 0) {
                         quickReply.style.top = finalPosY;

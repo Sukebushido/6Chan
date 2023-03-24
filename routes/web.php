@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\BoardController;
-use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\BoardController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\CatalogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 | contains the 'web' middleware group. Now create something great!
 |
 */
+Route::get('/image', [ImageController::class,'index'])->name('image.index');
+Route::post('/image', [ImageController::class,'store'])->name('image.store');
 
 Route::get('/', function () {
     return view('welcome');
@@ -32,5 +35,6 @@ Route::group(['prefix' => '/{boardName}'], function(){
         Route::post('/imgboard', [PostController::class, 'index'])->name('post');
     });
 }); 
+
 
 
