@@ -12,6 +12,10 @@
     flex-flow: column nowrap;
 }
 
+.f-center {
+    align-items: center;
+}
+
 .reply {
     background-color: $post-darker;
     padding: 2px;
