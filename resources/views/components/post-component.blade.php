@@ -209,6 +209,7 @@
             fileThumbs.forEach(file => {
                 file.addEventListener('click', (e) => {
                     e.preventDefault()
+                    console.log(window.innerWidth, window.innerHeight);
                     let small_img = file.querySelector('img');
                     if(!file.contains(file.querySelector('.expanded-thumb'))){
                         let big_img = document.createElement('img');
@@ -216,6 +217,7 @@
                         big_img.classList.add("expanded-thumb")
                         small_img.style.display = "none"
                         file.appendChild(big_img)
+                        big_img.style.maxWidth = window.innerWidth - 100 + "px"
                     } else {
                         file.removeChild(file.querySelector('.expanded-thumb'))
                         small_img.style.removeProperty('display');
