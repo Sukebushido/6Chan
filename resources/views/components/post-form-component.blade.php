@@ -1,6 +1,6 @@
 <div class="d-flex f-column f-center">
-    <p>Create new thread</p>
-    <form action="">
+    <p>[{{$thread ? "Post a Reply" : "Create new Thread"}}]</p>
+    <form action="{{ $thread ? route('post', ['boardName' => $thread->getBoardName()]) : "Create new Thread" }}">
         <table>
             <tbody>
                 <tr data-type="name">

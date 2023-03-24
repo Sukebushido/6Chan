@@ -1,7 +1,7 @@
 @extends('layout.app')
 
 @section('content')
-<x-post-form-component />
+<x-post-form-component :thread_id="$thread->id"/>
 <div class="thread main d-flex f-column" id="t{{ $thread->id }}">
     <x-topbar-component :boardName="$thread->getBoardName()" :showReturn=true :showCatalog=true :showBottom=true :showUpdate=true />
         @foreach ($thread->getPosts() as $post)

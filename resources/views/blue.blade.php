@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="main d-flex f-column">
+        <x-post-form-component :thread_id="null"/>
         <x-topbar-component :boardName="$boardName" :showCatalog=true :showArchive=true/>
         @foreach ($threads as $thread)
             <div class="thread" id="t{{ $thread->id }}">
