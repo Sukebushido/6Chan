@@ -15,7 +15,7 @@ use Intervention\Image\Facades\Image as IntervImage;
 class PostFormController extends Controller
 {
     public function reply(Request $request)
-    {
+    {   
         $request->validate([
             "threadId" => Rule::exists('threads', 'id'),
             "comment" => 'required',
@@ -25,7 +25,7 @@ class PostFormController extends Controller
             "threadId" => "Wrong thread Id",
             "image.mimes" => "Wrong image format"
         ]);
-
+        
         DB::beginTransaction();
         try {
             $newImage = NULL;
@@ -76,6 +76,7 @@ class PostFormController extends Controller
 
                 // Need to find if quoted post in current Thread or Not
 
+
                 foreach ($rawPostIDs as $rawPostID) {
                     $postID = substr($rawPostID, 2);
                     $relatedPost = Post::find($postID);
@@ -112,7 +113,16 @@ class PostFormController extends Controller
         return response()->json($request->all());
     }
 
-    public function newThread(Request $request){
-        
+    public function newThread(Request $request)
+    {
+        $request->validate([
+            "comment" => 'required',
+            "image" => 'required|image|mimes:jpg,png,jpeg,gif,svg'
+        ], [
+            "comment.required" => "You must at least post a comment with your reply",
+            "threadId" => "Wrong thread Id",
+            "image.mimes" => "Wrong image format",
+            "image.required" => "You have to post an image to start a new thread !"
+        ]);
     }
 }

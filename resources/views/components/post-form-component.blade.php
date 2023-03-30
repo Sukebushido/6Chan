@@ -1,6 +1,7 @@
 <div class="d-flex f-column f-center">
-    <p>[{{ $thread ? 'Post a Reply' : 'Create new Thread' }}]</p>
-    <form action="{{ $thread ? route('post', ['boardName' => $thread->getBoardName()]) : 'Create new Thread' }}"
+    <p>[{{ $isThread ? 'Post a Reply' : 'Create new Thread' }}]</p>
+    <form
+        action="{{ $isThread ? route('post', ['boardName' => $boardName]) : route('newThread', ['boardName' => $boardName]) }}"
         method="POST" id="post-form">
         @csrf
         <table>
@@ -59,7 +60,9 @@
                 </tr>
             </tbody>
         </table>
-        <input type="hidden" name="threadId" id="inputThreadId" value="">
+        @if ($isThread)
+            <input type="hidden" name="threadId" id="inputThreadId" value="">
+        @endif
     </form>
 </div>
 
@@ -81,8 +84,8 @@
             form_button.addEventListener('click', function(e) {
                 e.preventDefault();
                 axios.post(
-                        "{{ route('post', ['boardName' => $thread->getBoardName()]) }}", {
-                            "threadId": {!! $thread->id !!},
+                        "{{ $isThread ? route('reply', ['boardName' => $boardName]) : route('newThread', ['boardName' => $boardName]) }}", {
+                            "threadId": {{ $isThread ? $thread->id : "null" }},
                             "name": nameInput.value,
                             "options": optionsInput.value,
                             "comment": commentInput.value,
@@ -100,13 +103,13 @@
                         error_row.classList.add('hidden')
                         // window.location.reload();
                     }).catch(error => {
-                        error_data.innerText = "";
+                        error_data.innerHTML = "";
                         if (error.response.data.message.includes(
                                 'SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails'
                             )) {
-                                error_data.innerText =
-                                "Problem in writing in database, maybe your quotations are messed up";
-                                error_row.classList.remove('hidden')
+                            error_data.innerHTML =
+                                "<span>Problem in writing in database, maybe your quotations are messed up</span>";
+                            error_row.classList.remove('hidden')
                         } else {
                             let errors = error.response.data.errors;
                             if (errors == null) {
@@ -114,7 +117,7 @@
                             } else {
                                 let errors2 = Object.values(errors);
                                 for (let error of Object.values(errors)) {
-                                    error_data.innerText += `${error[0]}\n`;
+                                    error_data.innerHTML += `<span>${error[0]}</span></br>`;
                                 }
                                 error_row.classList.remove('hidden')
                             }

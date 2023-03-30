@@ -6,6 +6,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\PostFormController;
 
 /*
 |--------------------------------------------------------------------------

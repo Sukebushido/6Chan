@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Board;
 use App\Models\Thread;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -9,13 +10,19 @@ use Illuminate\View\Component;
 
 class PostFormComponent extends Component
 {
-    public $thread;
+    public $isThread = false;
+    public $thread = null;
+    public $boardName;
     /**
      * Create a new component instance.
      */
-    public function __construct($threadId)
+    public function __construct($isThread, $threadId, $boardName)
     {
-        $this->thread = Thread::find($threadId);
+        $this->isThread = $isThread;
+        if ($isThread) {
+            $this->thread = Thread::find($threadId);
+        }
+        $this->boardName = $boardName;
     }
 
     /**
