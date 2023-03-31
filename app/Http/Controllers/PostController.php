@@ -47,7 +47,6 @@ class PostController extends Controller
             }
 
             $currentPost = Post::create([
-                "title" => $request->name,
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId,

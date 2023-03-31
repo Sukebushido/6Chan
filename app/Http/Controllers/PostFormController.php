@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Board;
 use App\Models\Post;
 use App\Models\Image;
 use App\Models\PostPivot;
+use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,7 @@ use Intervention\Image\Facades\Image as IntervImage;
 class PostFormController extends Controller
 {
     public function reply(Request $request)
-    {   
+    {
         $request->validate([
             "threadId" => Rule::exists('threads', 'id'),
             "comment" => 'required',
@@ -25,7 +27,7 @@ class PostFormController extends Controller
             "threadId" => "Wrong thread Id",
             "image.mimes" => "Wrong image format"
         ]);
-        
+
         DB::beginTransaction();
         try {
             $newImage = NULL;
@@ -47,7 +49,6 @@ class PostFormController extends Controller
             }
 
             $currentPost = Post::create([
-                "title" => $request->name,
                 "content" => $request->comment,
                 "author" => "Anonymous",
                 "thread_id" => $request->threadId,
@@ -114,15 +115,52 @@ class PostFormController extends Controller
     }
 
     public function newThread(Request $request)
-    {
+    {   
+        return dump($request->all());
         $request->validate([
             "comment" => 'required',
             "image" => 'required|image|mimes:jpg,png,jpeg,gif,svg'
         ], [
             "comment.required" => "You must at least post a comment with your reply",
-            "threadId" => "Wrong thread Id",
             "image.mimes" => "Wrong image format",
             "image.required" => "You have to post an image to start a new thread !"
         ]);
+        try {
+            DB::beginTransaction();
+
+            $file = $request->file('image');
+            $image = $file->store($request->threadId, 'public');
+            $small_image = IntervImage::make($file)->resize(250, 250, function ($constraints) {
+                $constraints->aspectRatio();
+                $constraints->upsize();
+            })->encode('jpg', 100);
+            Storage::disk('public')->put($request->threadId . "/" . pathinfo($image, PATHINFO_FILENAME) . "s.jpg", $small_image);
+
+            $newImage = Image::create([
+                'name' => $request->file('image')->getClientOriginalName(),
+                'image' => $image,
+                'image_small' => $request->threadId . "/" . pathinfo($image, PATHINFO_FILENAME) . "s.jpg"
+            ]);
+
+            $newPost = Post::create([
+                "content" => $request->comment,
+                "author" => "Anonymous",
+                "image_id" => $newImage->id
+            ]);
+
+            $newThread = Thread::create([
+                'title' => $request->title ?? $request->comment,
+                'board_id' => Board::where('name', $request->boardName)->first()->id,
+                'id' => $newPost->id
+            ]);
+
+            $newPost->thread_id = $newThread->id;
+            $newPost->save();
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+        }
     }
 }

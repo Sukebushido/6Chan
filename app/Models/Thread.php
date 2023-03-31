@@ -10,7 +10,9 @@ class Thread extends Model
     use HasFactory;
 
     protected $fillable = [
-        "board"
+        "has_title",
+        "board_id",
+        "title"
     ];
 
     public function getPosts()

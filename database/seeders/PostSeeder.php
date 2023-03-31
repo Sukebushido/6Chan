@@ -18,7 +18,6 @@ class PostSeeder extends Seeder
         $posts = [
             [
                 "thread_id" => 1,
-                "title" => "I'm so sad",
                 "content" => "I'm so sad, what do",
                 "OP" => true
             ],
@@ -97,7 +96,6 @@ class PostSeeder extends Seeder
             ],
             [
                 "thread_id" => 20,
-                "title" => "Hello",
                 "author" => "NameFagging",
                 "content" => "I paid for 6Chan gold",
                 "OP" => true

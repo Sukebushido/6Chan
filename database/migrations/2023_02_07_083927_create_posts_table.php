@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("thread_id")->constrained();
+            $table->foreignId("thread_id")->nullable()->constrained();
             $table->foreignId("image_id")->nullable()->constrained();
-            $table->string("title")->nullable();
             $table->string("author")->nullable(false)->default("Anonymous");
             $table->boolean("OP")->default(false);
             $table->longText("content")->nullable(false);

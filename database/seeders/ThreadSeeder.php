@@ -18,16 +18,19 @@ class ThreadSeeder extends Seeder
         $threads = [
             [
                 "id" => 1,
+                "has_title" => true,
                 "title" => "im-so-sad",
                 "board_id" => 1
             ],
             [
                 "id" => 4,
+                "has_title" => false,
                 "title" => "wake-up-you-see-this-what-do",
                 "board_id" => 1
             ],
             [
                 "id" => 20,
+                "has_title" => true,
                 "title" => "hello",
                 "board_id" => 1
             ]
