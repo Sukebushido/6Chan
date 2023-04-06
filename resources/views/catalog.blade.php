@@ -19,7 +19,7 @@
                         @endif
                     </a>
                     <p>R : <span><strong>{{ count($OP->getThread()->getPosts()) }}</strong></span></p>
-                    <p>{!! $OP->title ? '<span><strong>' . $OP->title . '</strong>: </span>' : '' !!}{{ $OP->content }}</p>
+                    <p>{!! $OP->getThread()->title !!}</p>
                 </div>
             @endforeach
         </div>

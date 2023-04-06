@@ -3,7 +3,9 @@
     {!! !$post->OP ? "<div class='sidearrows'>>></div>" : '' !!}
     <div class="{{ $post->OP ? 'main' : 'reply' }} inner-post">
         <div class="title-container">
-            <span class="title">{{ $post->title }}</span>
+            @if ($post->OP && $post->getThread()->has_title)
+                <span class="title">{{ $post->getThreadTitle() }}</span>
+            @endif
             <span class="author">{{ $post->author }}</span>
             <span class="created-at">{{ $post->created_at }}</span>
             <span>
@@ -32,16 +34,19 @@
                     [$width, $height] = getimagesize(Storage::disk('public')->path($post->getImage()->image));
                 @endphp
                 <p>File :
-                    <a href={{ Storage::url($post->getImage()->image) }} target="_blank" rel="noopener noreferrer" class="filename">
+                    <a href={{ Storage::url($post->getImage()->image) }} target="_blank" rel="noopener noreferrer"
+                        class="filename">
                         {{ $post->getImage()->name }}</a>
-                     (<span class="space">{{ round(Storage::disk('public')->size($post->getImage()->image) / 1000) }} KB</span>,
+                    (<span class="space">{{ round(Storage::disk('public')->size($post->getImage()->image) / 1000) }}
+                        KB</span>,
                     <span class="size">{{ $width }}x{{ $height }}</span>)
                 </p>
             </div>
             <div class="img-container">
                 <a href="{{ Storage::url($post->getImage()->image) }}" target="_blank" class="fileThumb">
                     <img src="{{ Storage::url($post->getImage()->image_small) }}" class="thumbnail"
-                        alt="{{ round(Storage::disk('public')->size($post->getImage()->image) / 1000) }} KB" loading="lazy">
+                        alt="{{ round(Storage::disk('public')->size($post->getImage()->image) / 1000) }} KB"
+                        loading="lazy">
                 </a>
             </div>
         @endif
@@ -74,7 +79,7 @@
 </div>
 @pushOnce('scripts')
     <script>
-        window.addEventListener("load",function(){
+        window.addEventListener("load", function() {
             // Image related stuff
             let fileThumbs = document.querySelectorAll('.fileThumb');
 
@@ -138,7 +143,8 @@
                             axios.get(`{!! '/api/' . $post->getBoardName() . '/${childId}' !!}`)
                                 .then(res => {
                                     fetchedData = (res.data);
-                                    currentPostsInFetchedThread = fetchedData.map(entry => entry.id)
+                                    currentPostsInFetchedThread = fetchedData.map(entry => entry
+                                        .id)
                                 })
                                 .then(res => {
                                     fillAndAppendTemplate(fetchedData, childId, e.target)
@@ -150,7 +156,8 @@
                             fillAndAppendTemplate(fetchedData, childId, e.target)
                         }
                     } else {
-                        childElem = document.getElementById(`p${childId}`).querySelector('.inner-post')
+                        childElem = document.getElementById(`p${childId}`).querySelector(
+                            '.inner-post')
                         hoveredLink = e.target
                         observer.observe(childElem);
                     }
@@ -163,8 +170,9 @@
                     clone.querySelector('.title').innerText = quote.title
                     clone.querySelector('.author').innerText = quote.author
                     // Necessary for formatting
-                    clone.querySelector('.created-at').innerText = quote.created_at.replace("T", " ").substring(
-                        0, quote.created_at.length - 8)
+                    clone.querySelector('.created-at').innerText = quote.created_at.replace("T", " ")
+                        .substring(
+                            0, quote.created_at.length - 8)
                     clone.querySelector('.post-content').innerHTML = quote.content
 
                     let coordinates = {
@@ -211,7 +219,7 @@
                     e.preventDefault()
                     console.log(window.innerWidth, window.innerHeight);
                     let small_img = file.querySelector('img');
-                    if(!file.contains(file.querySelector('.expanded-thumb'))){
+                    if (!file.contains(file.querySelector('.expanded-thumb'))) {
                         let big_img = document.createElement('img');
                         big_img.src = file.href
                         big_img.classList.add("expanded-thumb")

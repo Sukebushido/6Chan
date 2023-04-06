@@ -24,7 +24,6 @@ class PostComponent extends Component
      */
     public function render(): View|Closure|string
     {
-        $image = Image::find($this->post->image_id);
-        return view('components.post-component', ['image' => $image]);
+        return view('components.post-component');
     }
 }

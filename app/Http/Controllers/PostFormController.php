@@ -148,9 +148,9 @@ class PostFormController extends Controller
                 "OP" => true
             ]);
 
-
             $newThread = Thread::create([
-                'title' => $request->title ?? substr($request->comment, 0, 20),
+                'has_title' => $request->subject ? true : false,
+                'title' => $request->subject ?? (strlen($request->comment) > 20 ? substr($request->comment, 0, 20)."(...)" : $request->comment),
                 'board_id' => Board::where('name', $request->boardName)->first()->id,
                 'id' => $newPost->id
             ]);
