@@ -5,35 +5,37 @@
         method="POST" id="post-form">
         @csrf
 
-        <div class="top-form-container">
-            <div data-type="name">
-                <label for="name" class="label">Name</label>
-                <input type="text" name="name" id="name" tabindex="3" placeholder="Anonymous">
-            </div>
-            <div data-type="options">
-                <label for="options" class="label">Options</label>
-                <input type="text" name="options" id="options"tabindex="3">
-            </div>
-            @if (!$thread)
-                <div data-type="subject">
-                    <label for="subject" class="label">Subject</label>
-                    <input type="text" name="subject" id="subject" tabindex="3">
+        <div class="top-form-container d-flex">
+            <div class="top-fields-container d-flex f-column">
+                <div data-type="name" class="field-container">
+                    <label for="name" class="label">Name</label>
+                    <input type="text" name="name" id="name" tabindex="3" placeholder="Anonymous" autocomplete="off">
                 </div>
-            @endif
+                <div data-type="options" class="field-container">
+                    <label for="options" class="label">Options</label>
+                    <input type="text" name="options" id="options"tabindex="3" autocomplete="off">
+                </div>
+                @if (!$thread)
+                    <div data-type="subject" class="field-container">
+                        <label for="subject" class="label">Subject</label>
+                        <input type="text" name="subject" id="subject" tabindex="3" autocomplete="off">
+                    </div>
+                @endif
+            </div>
             <div class="post-button">
                 <input type="submit" value="Post" tabindex="3" id="submit-btn">
             </div>
         </div>
-        <div data-type="comment">
+        <div data-type="comment" class="field-container">
             <label for="comment" class="label">Comment</label>
-            <textarea name="comment" cols="48" rows="4" wrap="soft" tabindex="4" id="comment"></textarea>
+            <textarea name="comment" cols="48" rows="4" wrap="soft" tabindex="4" id="comment" autocomplete="off"></textarea>
 
         </div>
-        <div data-type="verification">
+        <div data-type="verification" class="field-container">
             <label for="verification" class="label">Verification</label>
             <input type="text" name="verification" id="verification" placeholder="Coming Soon" disabled>
         </div>
-        <div data-type="file">
+        <div data-type="file" class="field-container">
             <label for="image" class="label">Image</label>
             <input type="file" name="image" id="image">
         </div>

@@ -18,13 +18,11 @@ class Board extends Model
     public function getOPs()
     {
         $threads = $this->getThreads()->where(['board_id' => $this->id])->get();
-        $threadsIDs = [];
+        $OPs = [];
 
         foreach ($threads as $thread) {
-            $threadsIDs[] = $thread->id;
+            $OPs[] = Post::where(['thread_id' => $thread->id], ['OP' => true])->first();
         };
-
-        $OPs = Post::find($threadsIDs);
         
         return $OPs;
     }
@@ -33,3 +31,15 @@ class Board extends Model
         "name"
     ];
 }
+
+// public function getOPs()
+//     {
+//         $threads = $this->getThreads()->where(['board_id' => $this->id])->get();
+//         $OPs = [];
+
+//         foreach ($threads as $thread) {
+//             $OPs[] = Post::where(['thread_id' => $thread->id], ['OP' => true])->get();
+//         };
+        
+//         return $OPs;
+//     }

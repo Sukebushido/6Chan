@@ -26,22 +26,22 @@
                 @endforeach
             </span>
         </div>
-        @if ($image)
+        @if ($post->getImage())
             <div class="img-metadata-container">
                 @php
-                    [$width, $height] = getimagesize(Storage::disk('public')->path($image->image));
+                    [$width, $height] = getimagesize(Storage::disk('public')->path($post->getImage()->image));
                 @endphp
                 <p>File :
-                    <a href={{ Storage::url($image->image) }} target="_blank" rel="noopener noreferrer" class="filename">
-                        {{ $image->name }}</a>
-                     (<span class="space">{{ round(Storage::disk('public')->size($image->image) / 1000) }} KB</span>,
+                    <a href={{ Storage::url($post->getImage()->image) }} target="_blank" rel="noopener noreferrer" class="filename">
+                        {{ $post->getImage()->name }}</a>
+                     (<span class="space">{{ round(Storage::disk('public')->size($post->getImage()->image) / 1000) }} KB</span>,
                     <span class="size">{{ $width }}x{{ $height }}</span>)
                 </p>
             </div>
             <div class="img-container">
-                <a href="{{ Storage::url($image->image) }}" target="_blank" class="fileThumb">
-                    <img src="{{ Storage::url($image->image_small) }}" class="thumbnail"
-                        alt="{{ round(Storage::disk('public')->size($image->image) / 1000) }} KB" loading="lazy">
+                <a href="{{ Storage::url($post->getImage()->image) }}" target="_blank" class="fileThumb">
+                    <img src="{{ Storage::url($post->getImage()->image_small) }}" class="thumbnail"
+                        alt="{{ round(Storage::disk('public')->size($post->getImage()->image) / 1000) }} KB" loading="lazy">
                 </a>
             </div>
         @endif

@@ -1,9 +1,18 @@
+#post-form {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+}
+
 .label {
     background-color: $label;
     font-weight: 700;
     border: 1px solid #000;
-    padding: 0 5px;
+    padding: 2px 4px 3px;
     font-size: 10pt;
+    min-width: 100px;
+    align-self: stretch;
+    display: flex;
     align-items: center;
 }
 
@@ -48,4 +57,14 @@ table {
         margin-bottom: -3px !important;
         width: 302px;
     }
+}
+
+.top-form-container {
+    align-items: end;
+}
+
+.field-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

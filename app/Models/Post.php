@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
@@ -27,7 +28,7 @@ class Post extends Model
     {
         return $this->getThread()->getBoard();
     }
-    
+
     public function getBoardId()
     {
         return $this->getThread()->getBoard()->id;
@@ -48,20 +49,27 @@ class Post extends Model
         return $this->getThread()->title;
     }
 
+    public function getImage()
+    {
+        return $this->belongsTo(Image::class, 'image_id', 'id')->first();
+    }
+
     // Many to many test
 
-    public function parent(): BelongsToMany{
+    public function parent(): BelongsToMany
+    {
         return $this->belongsToMany(Post::class, "post_pivot", "child_id", "parent_id");
     }
 
-    public function children(): BelongsToMany{
+    public function children(): BelongsToMany
+    {
         return $this->belongsToMany(Post::class, "post_pivot", "parent_id", "child_id");
     }
 
     // Evite de récupérer les quotes d'une autre thread / board
-    
-    public function trueChildren(){
-        return $this->children()->where(["thread_id"=>$this->getThreadId()]);
-    }
 
+    public function trueChildren()
+    {
+        return $this->children()->where(["thread_id" => $this->getThreadId()]);
+    }
 }

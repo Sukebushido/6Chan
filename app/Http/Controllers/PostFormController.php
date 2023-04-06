@@ -116,7 +116,6 @@ class PostFormController extends Controller
 
     public function newThread(Request $request)
     {   
-        return dump($request->all());
         $request->validate([
             "comment" => 'required',
             "image" => 'required|image|mimes:jpg,png,jpeg,gif,svg'
@@ -145,11 +144,13 @@ class PostFormController extends Controller
             $newPost = Post::create([
                 "content" => $request->comment,
                 "author" => "Anonymous",
-                "image_id" => $newImage->id
+                "image_id" => $newImage->id,
+                "OP" => true
             ]);
 
+
             $newThread = Thread::create([
-                'title' => $request->title ?? $request->comment,
+                'title' => $request->title ?? substr($request->comment, 0, 20),
                 'board_id' => Board::where('name', $request->boardName)->first()->id,
                 'id' => $newPost->id
             ]);
